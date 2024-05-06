@@ -7,15 +7,20 @@ public class Teacher extends BaseObject {
     private String name;
     private String number;
     private String gender;
+    private String course;
+    private String password;
     private String description;
+    private String department;
 
-    public Teacher() {
-    }
-
-    public Teacher(String name, String number, String description) {
+    public Teacher(int id, String createTime, String updateTime, String name, String number, String gender, String course, String password, String description, String department) {
+        super(id, createTime, updateTime);
         this.name = name;
         this.number = number;
+        this.gender = gender;
+        this.course = course;
+        this.password = password;
         this.description = description;
+        this.department = department;
     }
 
     public String getName() {
@@ -42,11 +47,35 @@ public class Teacher extends BaseObject {
         this.gender = gender;
     }
 
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }
