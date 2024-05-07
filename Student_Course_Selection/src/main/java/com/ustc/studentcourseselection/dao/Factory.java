@@ -1,7 +1,6 @@
 package com.ustc.studentcourseselection.dao;
 
 import com.ustc.studentcourseselection.model.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +18,7 @@ public class Factory {
      * @param args  构造函数对应的参数
      * @return 实体类
      */
-    public static @NotNull BaseObject createModel(Model model, Object... args) {
+    public static BaseObject createModel(Model model, Object... args) {
         try {
             Class<?> clazz = Class.forName("com.ustc.studentcourseselection.model." + model.name());
             Constructor<?> constructor = clazz.getConstructor(getParameterTypes(args));
