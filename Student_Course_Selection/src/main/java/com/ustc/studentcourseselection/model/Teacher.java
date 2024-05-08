@@ -12,9 +12,10 @@ public class Teacher extends BaseObject {
     public Teacher() {
     }
 
-    public Teacher(String name, String number, String description) {
+    public Teacher(String name, String number, String gender, String description) {
         this.name = name;
         this.number = number;
+        this.gender = gender;
         this.description = description;
     }
 

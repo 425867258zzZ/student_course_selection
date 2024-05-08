@@ -9,7 +9,7 @@ class Major {
     /**
      * The constant CS.
      */
-    public static final String CS = "计科";
+    public static final String CS = "计算机科学与技术";
     /**
      * The constant MATH.
      */
@@ -36,12 +36,12 @@ class Major {
 public class BaseObject {
 
     /**
-     * The Id.
+     * The id.
      */
     public int id;
 
     /**
-     * The create time.
+     * The creation time.
      */
     public String createTime;
 
@@ -90,7 +90,7 @@ public class BaseObject {
     /**
      * Gets create time.
      *
-     * @return the create time
+     * @return the creation time
      */
     public String getCreateTime() {
         return createTime;
@@ -99,7 +99,7 @@ public class BaseObject {
     /**
      * Sets create time.
      *
-     * @param createTime the create time
+     * @param createTime the creation time
      */
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
@@ -141,7 +141,7 @@ public class BaseObject {
             return false;
         }
         BaseObject object = (BaseObject) o;
-        return id == object.id && createTime == object.createTime && updateTime == object.updateTime;
+        return id == object.id && Objects.equals(createTime, object.createTime) && Objects.equals(updateTime, object.updateTime);
     }
 
     @Override
