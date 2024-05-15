@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -156,7 +154,7 @@ public class TeacherDao {
 
     public boolean del(String number) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "DELETE FROM teachers WHERE number = ?";
+        String sql2 = "DELETE FROM teacher WHERE number = ?";
         try {
             PreparedStatement ps = null;
             if (connection != null) {
@@ -246,7 +244,7 @@ public class TeacherDao {
 
     public BaseObject query(String number) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "SELECT * FROM teachers WHERE number = ?";
+        String sql2 = "SELECT * FROM teacher WHERE number = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql2);
             ps.setString(1, number);
@@ -274,7 +272,7 @@ public class TeacherDao {
 
     public Vector<Vector> queryAll() {
         Connection connection = DBconnection.getConnection();
-        String sql = "SELECT * FROM teachers";
+        String sql = "SELECT * FROM teacher";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
