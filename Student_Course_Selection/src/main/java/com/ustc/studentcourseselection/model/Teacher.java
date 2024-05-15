@@ -1,7 +1,6 @@
 package com.ustc.studentcourseselection.model;
 
 /**
- *
  * @author ≈À“Â¡º
  */
 public class Teacher extends BaseObject {
@@ -12,7 +11,7 @@ public class Teacher extends BaseObject {
     private String password;
     private String department;
 
-    public Teacher(int id, String name, String number, String gender, String department ,String course, String password, String createTime, String updateTime) {
+    public Teacher(int id, String name, String number, String gender, String department, String course, String password, String createTime, String updateTime) {
         super(id, createTime, updateTime);
         this.name = name;
         this.number = number;
@@ -70,6 +69,5 @@ public class Teacher extends BaseObject {
     public void setDepartment(String department) {
         this.department = department;
     }
-    public String getCreateTime() { return createTime ;}
-    public String getUpdateTime() { return updateTime ; }
+
 }

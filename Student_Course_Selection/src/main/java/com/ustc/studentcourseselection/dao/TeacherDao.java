@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- *
  * @author 潘义良
  */
 
@@ -84,7 +83,7 @@ public class TeacherDao {
         }*/
 
         //queryAll测试
-        /*TeacherDao dao = (TeacherDao) Class.forName("com.ustc.studentcourseselection.dao." + Model.Teacher.name() + "Dao").getConstructor().newInstance();
+        TeacherDao dao = (TeacherDao) Class.forName("com.ustc.studentcourseselection.dao." + Model.Teacher.name() + "Dao").getConstructor().newInstance();
         Vector<Vector> teachersData = dao.queryAll();
         // 打印查询结果
         System.out.println("所有教师信息：");
@@ -93,9 +92,10 @@ public class TeacherDao {
                 System.out.print(data + " ");
             }
             System.out.println();
-        }*/
+        }
 
     }
+
     private static boolean sqlDeal(Teacher teacher, Connection connection, String sql) {
         PreparedStatement ps = null;
         try {
@@ -182,9 +182,9 @@ public class TeacherDao {
     /**
      * 更新老师信息
      *
-     * @param number       工号
-     * @param columnName   要更新的列名
-     * @param columnValue  要更新的列的新值
+     * @param number      工号
+     * @param columnName  要更新的列名
+     * @param columnValue 要更新的列的新值
      * @return 更新是否成功的布尔值
      */
 
@@ -252,7 +252,7 @@ public class TeacherDao {
             ps.setString(1, number);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                Teacher teacher = new Teacher (rs.getInt("Id"), rs.getString("Name"),
+                Teacher teacher = new Teacher(rs.getInt("Id"), rs.getString("Name"),
                         rs.getString("Number"), rs.getString("Gender"),
                         rs.getString("Department"), rs.getString("Course"),
                         rs.getString("Password"), rs.getString("CreateTime"),

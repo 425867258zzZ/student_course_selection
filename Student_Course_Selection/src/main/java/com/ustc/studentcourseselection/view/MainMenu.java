@@ -10,8 +10,7 @@ public class MainMenu extends JFrame {
     public JPanel contentPane = new JPanel();
     public JPanel leftSidePanel = new JPanel();
     public JTabbedPane tabbedPane = new JTabbedPane();
-    CardLayout cardLayout = new CardLayout();
-    public JPanel mainPanel = new JPanel(cardLayout);
+    public JPanel mainPanel = new JPanel(new CardLayout());
 
     public MainMenu() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

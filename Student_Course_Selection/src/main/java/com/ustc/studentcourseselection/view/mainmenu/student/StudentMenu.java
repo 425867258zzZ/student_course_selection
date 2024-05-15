@@ -52,5 +52,4 @@ public class StudentMenu extends MainMenu {
             }
         });
     }
-
 }

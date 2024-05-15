@@ -42,7 +42,7 @@ public class StudentDao {
             if (ps != null) {
                 result = ps.executeUpdate() > 0;
             }
-            com.ustc.studentcourseselection.util.DBconnection.closeConnection(null, null, connection);
+            DBconnection.closeConnection(null, null, connection);
             return result;
         } catch (NullPointerException e) {
             System.out.println("NullPointerException");
@@ -76,7 +76,37 @@ public class StudentDao {
         Student student = (Student) baseObject;
         Connection connection = DBconnection.getConnection();
         String sql1 = "INSERT INTO student(id,name,number,gender,grade,degree,major,className,password,createTime,updateTime) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-        return sqlDeal(student, connection, sql1);
+        try {
+            PreparedStatement ps = null;
+            if (connection != null) {
+                ps = connection.prepareStatement(sql1);
+            }
+            if (ps != null) {
+                ps.setString(1, student.getName());
+                ps.setString(2, student.getNumber());
+                ps.setString(3, student.getGender());
+                ps.setInt(5, student.getGrade());
+                ps.setString(5, student.getDegree());
+                ps.setString(6, student.getMajor());
+                ps.setString(7, student.getClassName());
+                ps.setString(8, student.getPassword());
+                ps.setString(9, student.getCreateTime());
+                ps.setString(10, student.getUpdateTime());
+                ps.setInt(11, student.getId());
+            }
+
+            boolean result = false;
+            if (ps != null) {
+                result = ps.executeUpdate() > 0;
+            }
+            DBconnection.closeConnection(null, null, connection);
+            return result;
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException");
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+        }
+        return false;
     }
 
     /**
@@ -120,9 +150,39 @@ public class StudentDao {
      */
     public boolean update(Student student) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "";
-        return sqlDeal(student, connection, sql2);
+        String sql = "UPDATE student SET name=?, number=?, gender=?, grade=?, degree=?, major=?, className=?, password=?, updateTime=? WHERE id=?";
+        try {
+            PreparedStatement ps = null;
+            if (connection != null) {
+                ps = connection.prepareStatement(sql);
+            }
+            if (ps != null) {
+                ps.setString(1, student.getName());
+                ps.setString(2, student.getNumber());
+                ps.setString(3, student.getGender());
+                ps.setInt(4, student.getGrade());
+                ps.setString(5, student.getDegree());
+                ps.setString(6, student.getMajor());
+                ps.setString(7, student.getClassName());
+                ps.setString(8, student.getPassword());
+                ps.setString(9, BaseUtils.getTime());
+                ps.setInt(10, student.getId());
+            }
+
+            boolean result = false;
+            if (ps != null) {
+                result = ps.executeUpdate() > 0;
+            }
+            DBconnection.closeConnection(null, null, connection);
+            return result;
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException");
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+        }
+        return false;
     }
+
 
     /**
      * 查询单个学生

@@ -101,6 +101,4 @@ public class personalInfoPanel extends JPanel {
         info.setBounds(20, 20, 450, 305);
         return info;
     }
-
-
 }
