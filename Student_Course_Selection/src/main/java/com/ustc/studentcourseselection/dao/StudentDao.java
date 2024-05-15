@@ -12,12 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * @author 孟梓晗
  */
-public class StudentDao implements ObjectDao {
+public class StudentDao {
 
     private static boolean sqlDeal(Student student, Connection connection, String sql) {
         try {
@@ -39,7 +38,10 @@ public class StudentDao implements ObjectDao {
                 ps.setString(11, student.getUpdateTime());
             }
 
-            boolean result = ps.executeUpdate() > 0;
+            boolean result = false;
+            if (ps != null) {
+                result = ps.executeUpdate() > 0;
+            }
             com.ustc.studentcourseselection.util.DBconnection.closeConnection(null, null, connection);
             return result;
         } catch (NullPointerException e) {
@@ -70,7 +72,6 @@ public class StudentDao implements ObjectDao {
      */
 
 
-    @Override
     public boolean add(BaseObject baseObject) {
         Student student = (Student) baseObject;
         Connection connection = DBconnection.getConnection();
@@ -84,14 +85,22 @@ public class StudentDao implements ObjectDao {
      * @param number 学号
      * @return 布尔值
      */
-    @Override
+
     public boolean del(String number) {
         Connection connection = DBconnection.getConnection();
         String sql2 = "DELETE FROM student WHERE number = ?";
         try {
-            PreparedStatement ps = connection.prepareStatement(sql2);
-            ps.setString(1, number);
-            boolean result = ps.executeUpdate() > 0;
+            PreparedStatement ps = null;
+            if (connection != null) {
+                ps = connection.prepareStatement(sql2);
+            }
+            if (ps != null) {
+                ps.setString(1, number);
+            }
+            boolean result = false;
+            if (ps != null) {
+                result = ps.executeUpdate() > 0;
+            }
             DBconnection.closeConnection(null, ps, connection);
             return result;
         } catch (NullPointerException e) {
@@ -106,12 +115,10 @@ public class StudentDao implements ObjectDao {
      * 修改学生数据
      * TODO 完善sql语句和处理逻辑
      *
-     * @param object 学生
+     * @param student 学生
      * @return 布尔值
      */
-    @Override
-    public boolean update(BaseObject object) {
-        Student student = (Student) object;
+    public boolean update(Student student) {
         Connection connection = DBconnection.getConnection();
         String sql2 = "";
         return sqlDeal(student, connection, sql2);
@@ -123,21 +130,29 @@ public class StudentDao implements ObjectDao {
      * @param number 学号
      * @return 学生
      */
-    @Override
-    public BaseObject query(String number) {
+
+    public Student query(String number) {
         Connection connection = DBconnection.getConnection();
         String sql2 = "SELECT * FROM student WHERE number = ?";
         try {
-            PreparedStatement ps = connection.prepareStatement(sql2);
-            ps.setString(1, number);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            PreparedStatement ps = null;
+            if (connection != null) {
+                ps = connection.prepareStatement(sql2);
+            }
+            if (ps != null) {
+                ps.setString(1, number);
+            }
+            ResultSet rs = null;
+            if (ps != null) {
+                rs = ps.executeQuery();
+            }
+            if (rs != null && rs.next()) {
                 Student student = new Student(rs.getInt("id"), rs.getString("name"), rs.getString("number"), rs.getString("gender"), rs.getInt("grade"), rs.getString("degree"), rs.getString("major"), rs.getString("className"), rs.getString("password"), rs.getString("createTime"), rs.getString("updateTime"));
                 DBconnection.closeConnection(rs, ps, connection);
                 return student;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
@@ -148,23 +163,32 @@ public class StudentDao implements ObjectDao {
      *
      * @return Array<student>
      */
-    @Override
-    public Vector<Vector> queryAll() {
+
+    public List<Student> queryAll() {
         Connection connection = DBconnection.getConnection();
         String sql2 = "SELECT * FROM student";
         try {
-            PreparedStatement ps = connection.prepareStatement(sql2);
-            ResultSet rs = ps.executeQuery();
-            List<Student> students = new ArrayList<Student>();
-            while (rs.next()) {
-                Student student = new Student(rs.getInt("id"), rs.getString("name"), rs.getString("gender"), rs.getString("name"),
-                        rs.getInt("grade"), rs.getString("degree"), rs.getString("major"), rs.getString("className"),
-                        rs.getString("password"), rs.getString("createTime"), rs.getString("updateTime"));
-                students.add(student);
+            PreparedStatement ps = null;
+            if (connection != null) {
+                ps = connection.prepareStatement(sql2);
+            }
+            ResultSet rs = null;
+            if (ps != null) {
+                rs = ps.executeQuery();
+            }
+            List<Student> students = new ArrayList<>();
+            if (rs != null) {
+                while (rs.next()) {
+                    Student student = new Student(rs.getInt("id"), rs.getString("name"), rs.getString("number"), rs.getString("gender"),
+                            rs.getInt("grade"), rs.getString("degree"), rs.getString("major"), rs.getString("className"),
+                            rs.getString("password"), rs.getString("createTime"), rs.getString("updateTime"));
+                    students.add(student);
+                }
             }
             DBconnection.closeConnection(rs, null, connection);
+            return students;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
