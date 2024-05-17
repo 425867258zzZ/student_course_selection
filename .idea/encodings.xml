@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Student_Course_Selection/src/main/java/com/ustc/studentcourseselection/controller/LoginUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Student_Course_Selection/src/main/java/com/ustc/studentcourseselection/dao/Factory.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Student_Course_Selection/src/main/java/com/ustc/studentcourseselection/view/Login.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../../student_course_selection-master/Student_Course_Selection/src/main/java/com/ustc/studentcourseselection/dao/Factory.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../../student_course_selection-master/Student_Course_Selection/src/main/java/com/ustc/studentcourseselection/view/Login.java" charset="GBK" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>
