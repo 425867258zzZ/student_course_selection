@@ -8,7 +8,6 @@ import com.ustc.studentcourseselection.model.Student;
  * 登录验证
  *
  * @author 孟梓晗
- * <p>
  * "PB" 学生学号开头
  * "PT" 教师工号开头
  * "admin" 管理员账户名

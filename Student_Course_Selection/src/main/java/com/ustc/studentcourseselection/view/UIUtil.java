@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 /**
  * UI组件的工具方法
  *
@@ -21,7 +20,7 @@ public class UIUtil {
      * @param path      图片路径
      * @param picWidth  目标宽
      * @param picHeight 目标高度
-     * @return the image icon
+     * @return 图标
      * @author 孟梓晗
      */
     public static ImageIcon loadPic(String path, int picWidth, int picHeight) {
@@ -30,8 +29,7 @@ public class UIUtil {
         Image scaledImage = originalImage.getScaledInstance(picWidth, picHeight, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }
-
-
+    
     /**
      * 在主界面增加侧边按钮
      *
