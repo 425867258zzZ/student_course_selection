@@ -5,11 +5,9 @@ import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Student;
 import com.ustc.studentcourseselection.util.DBconnection;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +16,20 @@ import java.util.List;
  */
 public class StudentDao {
 
-    private static boolean sqlDeal(Student student, Connection connection, String sql) {
+    /**
+     * 添加学生
+     *
+     * @param baseObject 学生
+     * @return 布尔值
+     */
+    public boolean add(BaseObject baseObject) {
+        Student student = (Student) baseObject;
+        Connection connection = DBconnection.getConnection();
+        String sql1 = "INSERT INTO student(id,name,number,gender,grade,degree,major,className,password,createTime,updateTime) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
-                ps = connection.prepareStatement(sql);
+                ps = connection.prepareStatement(sql1);
             }
             if (ps != null) {
                 ps.setInt(1, student.getId());
@@ -37,7 +44,6 @@ public class StudentDao {
                 ps.setString(10, student.getCreateTime());
                 ps.setString(11, student.getUpdateTime());
             }
-
             boolean result = false;
             if (ps != null) {
                 result = ps.executeUpdate() > 0;
@@ -50,20 +56,6 @@ public class StudentDao {
             DBconnection.closeConnection(null, ps, connection);
         }
         return false;
-    }
-
-
-    /**
-     * 添加学生
-     *
-     * @param baseObject 学生
-     * @return 布尔值
-     */
-    public boolean add(BaseObject baseObject) {
-        Student student = (Student) baseObject;
-        Connection connection = DBconnection.getConnection();
-        String sql1 = "INSERT INTO student(id,name,number,gender,grade,degree,major,className,password,createTime,updateTime) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-        return sqlDeal(student, connection, sql1);
     }
 
     /**
@@ -106,11 +98,11 @@ public class StudentDao {
      */
     public boolean update(Student student) {
         Connection connection = DBconnection.getConnection();
-        String sql = "UPDATE student SET name=?, number=?, gender=?, grade=?, degree=?, major=?, className=?, updateTime=? WHERE id=?";
+        String sql3 = "UPDATE student SET name=?, number=?, gender=?, grade=?, degree=?, major=?, className=?, updateTime=? WHERE id=?";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
-                ps = connection.prepareStatement(sql);
+                ps = connection.prepareStatement(sql3);
             }
             if (ps != null) {
                 ps.setString(1, student.getName());
@@ -141,14 +133,13 @@ public class StudentDao {
      * @param number 学号
      * @return 学生
      */
-
     public Student query(String number) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "SELECT * FROM student WHERE number = ?";
+        String sql4 = "SELECT * FROM student WHERE number = ?";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
-                ps = connection.prepareStatement(sql2);
+                ps = connection.prepareStatement(sql4);
             }
             if (ps != null) {
                 ps.setString(1, number);
@@ -175,15 +166,14 @@ public class StudentDao {
      *
      * @return Array<student>
      */
-
     public List<Student> queryAll() {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "SELECT * FROM student";
+        String sql5 = "SELECT * FROM student";
         ResultSet rs = null;
         PreparedStatement ps = null;
         try {
             if (connection != null) {
-                ps = connection.prepareStatement(sql2);
+                ps = connection.prepareStatement(sql5);
             }
             if (ps != null) {
                 rs = ps.executeQuery();

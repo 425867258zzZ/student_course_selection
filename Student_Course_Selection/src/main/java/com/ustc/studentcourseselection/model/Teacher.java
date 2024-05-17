@@ -19,7 +19,6 @@ public class Teacher extends BaseObject {
         this.department = department;
         this.course = course;
         this.password = password;
-
     }
 
     public String getName() {
@@ -70,4 +69,14 @@ public class Teacher extends BaseObject {
         this.department = department;
     }
 
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "name='" + name +
+                ", number='" + number +
+                ", gender='" + gender +
+                ", course='" + course +
+                ", department='" + department +
+                '}';
+    }
 }

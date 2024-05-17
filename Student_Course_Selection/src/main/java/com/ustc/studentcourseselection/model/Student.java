@@ -104,5 +104,17 @@ public class Student extends BaseObject {
     public void setPassword(String password) {
         this.password = password;
     }
-    // ´ýÍêÉÆ
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name +
+                ", number='" + number +
+                ", gender='" + gender +
+                ", grade=" + grade +
+                ", degree='" + degree +
+                ", major='" + major +
+                ", className='" + className +
+                '}';
+    }
 }
