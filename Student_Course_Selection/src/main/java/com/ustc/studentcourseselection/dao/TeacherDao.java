@@ -16,7 +16,6 @@ import java.util.Vector;
  */
 
 public class TeacherDao {
-
     /**
      * Ìí¼ÓÀÏÊ¦
      *
@@ -97,6 +96,29 @@ public class TeacherDao {
      */
 
     public boolean update(Teacher teacher) {
+        Connection connection = DBconnection.getConnection();
+        String sql3 = "UPDATE teacher SET name=?, number=?, gender=?, department=?, updateTime=? WHERE id=?";
+        PreparedStatement ps = null;
+        try {
+            if (connection != null) {
+                ps = connection.prepareStatement(sql3);
+            }
+            if (ps != null) {
+                ps.setString(1, teacher.getName());
+                ps.setString(2, teacher.getNumber());
+                ps.setString(3, teacher.getGender());
+                ps.setString(4, teacher.getDepartment());
+                ps.setString(5, BaseUtils.getTime());
+                ps.setInt(6, teacher.getId());
+            }
+            if (ps != null) {
+                return ps.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            DBconnection.closeConnection(null, ps, connection);
+        }
         return false;
     }
 
