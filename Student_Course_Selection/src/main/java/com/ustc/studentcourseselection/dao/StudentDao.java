@@ -80,7 +80,6 @@ public class StudentDao {
             if (ps != null) {
                 result = ps.executeUpdate() > 0;
             }
-            DBconnection.closeConnection(null, ps, connection);
             return result;
         } catch (Exception e) {
             System.out.println(e.getMessage());

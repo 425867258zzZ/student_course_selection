@@ -15,7 +15,6 @@ package com.ustc.studentcourseselection.model;
 public class Course extends BaseObject {
     private String number;
     private String courseName;
-    private String teacherName;
     private String courseTime;
     private String major;
     private String location;
@@ -25,11 +24,11 @@ public class Course extends BaseObject {
     public Course() {
     }
 
-    public Course(int id, String createTime, String updateTime, String number, String courseName, String teacherName, String courseTime, String major, String location, int score, int capacity) {
+    public Course(int id, String createTime, String updateTime, String number, String courseName, String courseTime, String major, String location, int score, int capacity) {
         super(id, createTime, updateTime);
         this.number = number;
         this.courseName = courseName;
-        this.teacherName = teacherName;
+
         this.courseTime = courseTime;
         this.major = major;
         this.location = location;
@@ -51,14 +50,6 @@ public class Course extends BaseObject {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
-    }
-
-    public String getTeacherName() {
-        return teacherName;
-    }
-
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
     }
 
     public String getCourseTime() {
@@ -99,5 +90,18 @@ public class Course extends BaseObject {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "number='" + number + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseTime='" + courseTime + '\'' +
+                ", major='" + major + '\'' +
+                ", location='" + location + '\'' +
+                ", score=" + score +
+                ", capacity=" + capacity +
+                '}';
     }
 }

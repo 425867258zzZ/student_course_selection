@@ -129,7 +129,7 @@ public class TeacherDao {
      * @return ¿œ ¶
      */
 
-    public BaseObject query(String number) {
+    public Teacher query(String number) {
         Connection connection = DBconnection.getConnection();
         String sql2 = "SELECT * FROM teacher WHERE number = ?";
         PreparedStatement ps = null;

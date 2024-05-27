@@ -6,7 +6,7 @@ import com.ustc.studentcourseselection.model.Student;
 import java.util.List;
 
 /**
- * 学生选课的一系列数据库交互逻辑
+ * 学生选课交互逻辑
  *
  * @author 孟梓晗
  */
@@ -17,8 +17,8 @@ public class StudentCourseDao {
      * @param student 学生
      * @param course  课程
      */
-    public void addCourseForStudent(Student student, Course course) {
-
+    public boolean addCourseForStudent(Student student, Course course) {
+        return false;
     }
 
     /**
@@ -27,8 +27,8 @@ public class StudentCourseDao {
      * @param student 学生
      * @param course  课程
      */
-    public void removeCourseForStudent(Student student, Course course) {
-
+    public boolean removeCourseForStudent(Student student, Course course) {
+        return false;
     }
 
     /**
