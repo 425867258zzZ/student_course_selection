@@ -1,6 +1,7 @@
 package com.ustc.studentcourseselection.view.mainmenu.student.panel;
 
 import com.ustc.studentcourseselection.model.Student;
+import com.ustc.studentcourseselection.view.Panel;
 import com.ustc.studentcourseselection.view.UIUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,15 +11,13 @@ import java.awt.*;
 /**
  * @author ASUS
  */
-public class personalInfoPanel extends JPanel {
+public class personalInfoPanel extends Panel {
     public personalInfoPanel(Student student) {
-        setBounds(200, 0, 994, 667);
-        setLayout(null);
-        setBackground(new Color(240, 240, 200));
+        super();
 
         JPanel basicPanel = new JPanel();
         basicPanel.setLayout(null);
-        basicPanel.setBackground(new Color(240, 240, 200));
+        basicPanel.setBackground(new Color(240, 240, 220));
         basicPanel.setBounds(50, 40, 280, 500);
         add(basicPanel);
 
@@ -63,7 +62,7 @@ public class personalInfoPanel extends JPanel {
 
         JPanel majorPanel = new JPanel();
         majorPanel.setLayout(null);
-        majorPanel.setBackground(new Color(240, 240, 200));
+        majorPanel.setBackground(new Color(240, 240, 220));
         majorPanel.setBounds(400, 40, 530, 500);
         add(majorPanel);
 
@@ -89,7 +88,7 @@ public class personalInfoPanel extends JPanel {
 
         JLabel className = new JLabel("°à¼¶£º" + student.getMajor() + "Ñ§Ôº" + student.getClassName());
         className.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 15));
-        className.setBounds(15, 370, 200, 30);
+        className.setBounds(15, 370, 300, 30);
         majorPanel.add(className);
     }
 

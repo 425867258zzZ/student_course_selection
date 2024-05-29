@@ -24,11 +24,10 @@ public class Course extends BaseObject {
     public Course() {
     }
 
-    public Course(int id, String createTime, String updateTime, String number, String courseName, String courseTime, String major, String location, int score, int capacity) {
+    public Course(int id, String number, String courseName, String courseTime, String major, String location, int score, int capacity, String createTime, String updateTime) {
         super(id, createTime, updateTime);
         this.number = number;
         this.courseName = courseName;
-
         this.courseTime = courseTime;
         this.major = major;
         this.location = location;

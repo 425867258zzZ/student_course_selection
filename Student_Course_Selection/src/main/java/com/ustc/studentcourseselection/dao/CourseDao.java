@@ -7,8 +7,7 @@ import com.ustc.studentcourseselection.util.DBconnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 
 /**
@@ -18,6 +17,38 @@ import java.util.List;
  */
 public class CourseDao {
     /**
+     * 返回当前课程已选课人数
+     *
+     * @param id 课程id
+     * @return 选课人数
+     */
+    public static int selectCount(int id) {
+        Connection connection = DBconnection.getConnection();
+        String sql = """
+                SELECT course_id, COUNT(student_id) AS student_count
+                FROM student_course
+                WHERE course_id = ?
+                GROUP BY course_id;""";
+        if (connection != null) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                try (ResultSet resultSet = ps.executeQuery()) {
+                    if (resultSet.getRow() == 0) {
+                        return 0;
+                    }
+                    if (resultSet.next()) {
+                        System.out.println(1);
+                        return resultSet.getInt("student_count");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return -1;
+    }
+
+    /**
      * 增加数据
      *
      * @param course 课程
@@ -25,7 +56,7 @@ public class CourseDao {
      */
     public boolean addCourse(Course course) {
         Connection connection = DBconnection.getConnection();
-        String sql1 = "INSERT INTO course(id,number,courseName,courseTime,major,location,score,capacity,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String sql1 = "INSERT INTO course(id,number,course_name,course_time,major,location,score,capacity,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
@@ -90,7 +121,7 @@ public class CourseDao {
      */
     public boolean update(Course course) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "UPDATE course SET number=?,courseName=?,courseTime=?,major=?,location=?,score=?,capacity=?, update_time=? WHERE id=?";
+        String sql2 = "UPDATE course SET number=?,course_name=?,course_time=?,major=?,location=?,score=?,capacity=?, update_time=? WHERE id=?";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
@@ -141,9 +172,8 @@ public class CourseDao {
                 rs = ps.executeQuery();
             }
             if (rs != null && rs.next()) {
-                return new Course(rs.getInt("id"), rs.getString("createTime"), rs.getString("updateTime"), rs.getString("number"), rs.getString("courseName"),
-                        rs.getString("courseTime"), rs.getString("major"), rs.getString("location"), rs.getInt("score"),
-                        rs.getInt("capacity"));
+                return new Course(rs.getInt("id"), rs.getString("number"), rs.getString("course_name"),
+                        rs.getString("course_time"), rs.getString("major"), rs.getString("location"), rs.getInt("score"), rs.getInt("capacity"), rs.getString("create_time"), rs.getString("update_time"));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -158,7 +188,7 @@ public class CourseDao {
      *
      * @return 所有课程
      */
-    public List<Course> queryAll() {
+    public Vector<Vector<String>> queryAll() {
         Connection connection = DBconnection.getConnection();
         String sql2 = "SELECT * FROM course";
         PreparedStatement ps = null;
@@ -170,12 +200,18 @@ public class CourseDao {
             if (ps != null) {
                 rs = ps.executeQuery();
             }
-            List<Course> courses = new ArrayList<>();
+            Vector<Vector<String>> courses = new Vector<>();
             if (rs != null) {
                 while (rs.next()) {
-                    Course course = new Course(rs.getInt("id"), rs.getString("createTime"), rs.getString("updateTime"), rs.getString("number"), rs.getString("courseName"),
-                            rs.getString("courseTime"), rs.getString("major"), rs.getString("location"), rs.getInt("score"),
-                            rs.getInt("capacity"));
+                    Vector<String> course = new Vector<>();
+                    String selectCount = Integer.toString(selectCount(rs.getInt("id")));
+                    course.add(rs.getString("number"));
+                    course.add(rs.getString("course_name"));
+                    course.add(rs.getString("course_time"));
+                    course.add(rs.getString("major"));
+                    course.add(rs.getString("location"));
+                    course.add(rs.getString("score"));
+                    course.add(selectCount + "/" + rs.getString("capacity"));
                     courses.add(course);
                 }
             }
@@ -186,33 +222,5 @@ public class CourseDao {
             DBconnection.closeConnection(null, ps, connection);
         }
         return null;
-    }
-
-    /**
-     * 返回当前课程已选课人数
-     *
-     * @param id 课程id
-     * @return 选课人数
-     */
-    public int selectCount(int id) {
-        Connection connection = DBconnection.getConnection();
-        String sql = """
-                SELECT course_id, COUNT(student_id) AS student_count
-                FROM student_course
-                WHERE course_id = ?
-                GROUP BY course_id;""";
-        if (connection != null) {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setInt(1, id);
-                try (ResultSet resultSet = ps.executeQuery()) {
-                    if (resultSet.next()) {
-                        return resultSet.getInt("student_count");
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return -1;
     }
 }

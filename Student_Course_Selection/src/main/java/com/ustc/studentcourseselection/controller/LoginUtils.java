@@ -18,19 +18,20 @@ public class LoginUtils {
     private static final String STUDENT_START = "PB";
     private static final String TEACHER_START = "PT";
     private static final String ADMIN_START = "admin";
+    private static final int INDEX = 2;
 
     public static BaseObject loginConfirm(String username, String password) {
         if (username.length() <= 1) {
             return null;
         }
-        if (STUDENT_START.equals(username.substring(0, 2))) {
+        if (STUDENT_START.equals(username.substring(0, INDEX))) {
             StudentDao studentDao = new StudentDao();
-            Student student = (Student) studentDao.query(username);
+            Student student = studentDao.query(username);
             if (student == null || !student.getPassword().equals(password)) {
                 return null;
             }
             return student;
-        } else if (TEACHER_START.equals(username.substring(0, 2))) {
+        } else if (TEACHER_START.equals(username.substring(0, INDEX))) {
             TeacherDao teacherDao = new TeacherDao();
             Teacher teacher = teacherDao.query(username);
             if (teacher == null || !teacher.getPassword().equals(password)) {

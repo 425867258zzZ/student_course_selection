@@ -3,6 +3,7 @@ package com.ustc.studentcourseselection.view.mainmenu.student;
 import com.ustc.studentcourseselection.model.Student;
 import com.ustc.studentcourseselection.view.MainMenu;
 import com.ustc.studentcourseselection.view.UIUtil;
+import com.ustc.studentcourseselection.view.mainmenu.student.panel.CourseChoosePanel;
 import com.ustc.studentcourseselection.view.mainmenu.student.panel.personalInfoPanel;
 
 import java.awt.*;
@@ -39,9 +40,7 @@ public class StudentMenu extends MainMenu {
         mainPanel.add(courseChosenPanel, "courseChosen");
         courseChosenButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, courseChosenPanel, "        已选课程        "));
 
-        JPanel allCoursePanel = new JPanel();
-        allCoursePanel.setBackground(Color.WHITE);
-        allCoursePanel.add(new JLabel("这里是所有课程面板"));
+        JPanel allCoursePanel = new CourseChoosePanel();
         mainPanel.add(allCoursePanel, "allCourse");
         allCourseButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, allCoursePanel, "        所有课程        "));
 
