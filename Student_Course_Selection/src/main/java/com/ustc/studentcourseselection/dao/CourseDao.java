@@ -211,7 +211,8 @@ public class CourseDao {
                     course.add(rs.getString("major"));
                     course.add(rs.getString("location"));
                     course.add(rs.getString("score"));
-                    course.add(selectCount + "/" + rs.getString("capacity"));
+                    course.add(selectCount);
+                    course.add(rs.getString("capacity"));
                     courses.add(course);
                 }
             }

@@ -40,7 +40,7 @@ public class StudentMenu extends MainMenu {
         mainPanel.add(courseChosenPanel, "courseChosen");
         courseChosenButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, courseChosenPanel, "        已选课程        "));
 
-        JPanel allCoursePanel = new CourseChoosePanel();
+        JPanel allCoursePanel = new CourseChoosePanel(student);
         mainPanel.add(allCoursePanel, "allCourse");
         allCourseButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, allCoursePanel, "        所有课程        "));
 

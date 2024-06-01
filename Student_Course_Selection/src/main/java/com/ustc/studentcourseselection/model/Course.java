@@ -4,7 +4,7 @@ package com.ustc.studentcourseselection.model;
  * number 课程编号
  * courseName 课程名称
  * teacherName 老师名字
- * courseTime 上课时间
+ * courseTime 上课时间，按照“周一（1、2），周二（3、4）”的格式,注意用中文的逗号隔开周内天数，用中文顿号隔开节数
  * major 所属专业
  * location 上课地点
  * score 学分
@@ -20,9 +20,6 @@ public class Course extends BaseObject {
     private String location;
     private int score;
     private int capacity;
-
-    public Course() {
-    }
 
     public Course(int id, String number, String courseName, String courseTime, String major, String location, int score, int capacity, String createTime, String updateTime) {
         super(id, createTime, updateTime);

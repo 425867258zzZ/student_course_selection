@@ -22,30 +22,26 @@ public class StudentCourseDao {
      * @param studentId 学生id
      * @param courseId  课程id
      */
-    public boolean addCourseForStudent(int studentId, int courseId, int courseCapacity) {
-        CourseDao courseDao = new CourseDao();
-        //若当前课程已满，则无法选课
-        int studentNow = courseDao.selectCount(courseId);
-        if (studentNow < courseCapacity) {
-            Connection connection = DBconnection.getConnection();
-            String sql1 = "INSERT INTO student_course(student_id,course_id) VALUES(?,?)";
-            PreparedStatement ps = null;
-            try {
-                if (connection != null) {
-                    ps = connection.prepareStatement(sql1);
-                }
-                if (ps != null) {
-                    ps.setInt(1, studentId);
-                    ps.setInt(2, courseId);
-                }
-                if (ps != null) {
-                    return ps.executeUpdate() > 0;
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            } finally {
-                DBconnection.closeConnection(null, ps, connection);
+    public boolean addCourseForStudent(int studentId, int courseId) {
+
+        Connection connection = DBconnection.getConnection();
+        String sql1 = "INSERT INTO student_course(student_id,course_id) VALUES(?,?)";
+        PreparedStatement ps = null;
+        try {
+            if (connection != null) {
+                ps = connection.prepareStatement(sql1);
             }
+            if (ps != null) {
+                ps.setInt(1, studentId);
+                ps.setInt(2, courseId);
+            }
+            if (ps != null) {
+                return ps.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            DBconnection.closeConnection(null, ps, connection);
         }
         return false;
     }
