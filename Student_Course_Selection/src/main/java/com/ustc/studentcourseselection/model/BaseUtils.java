@@ -1,7 +1,5 @@
 package com.ustc.studentcourseselection.model;
 
-import com.sun.tools.javac.Main;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

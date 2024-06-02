@@ -47,7 +47,7 @@ public class CourseDao {
      */
     public boolean addCourse(Course course) {
         Connection connection = DBconnection.getConnection();
-        String sql1 = "INSERT INTO course(id,number,course_name,course_time,major,location,course.teacher_name,score,capacity,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String sql1 = "INSERT INTO course(id,number,course_name,course_time,major,location,teacher_name,score,capacity,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             if (connection != null) {

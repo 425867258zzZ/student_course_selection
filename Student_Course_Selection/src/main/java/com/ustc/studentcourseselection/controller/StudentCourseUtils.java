@@ -77,7 +77,6 @@ public class StudentCourseUtils {
 
     public static void refreshCourseForChooseCourse(Vector<Vector<String>> courseData) {
         CourseDao courseDao = new CourseDao();
-        StudentCourseDao studentCourseDao = new StudentCourseDao();
         for (Vector<String> course : courseData) {
             Course thisCourse = courseDao.query(course.getFirst());
             String studentNow = Integer.toString(CourseDao.selectCount(thisCourse.getId()));
