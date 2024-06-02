@@ -96,6 +96,29 @@ public class TeacherDao {
      */
 
     public boolean update(Teacher teacher) {
+        Connection connection = DBconnection.getConnection();
+        String sql3 = "UPDATE teacher SET name=?, number=?, gender=?, department=?, updateTime=? WHERE id=?";
+        PreparedStatement ps = null;
+        try {
+            if (connection != null) {
+                ps = connection.prepareStatement(sql3);
+            }
+            if (ps != null) {
+                ps.setString(1, teacher.getName());
+                ps.setString(2, teacher.getNumber());
+                ps.setString(3, teacher.getGender());
+                ps.setString(4, teacher.getDepartment());
+                ps.setString(5, BaseUtils.getTime());
+                ps.setInt(6, teacher.getId());
+            }
+            if (ps != null) {
+                return ps.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            DBconnection.closeConnection(null, ps, connection);
+        }
         return false;
     }
 
@@ -106,13 +129,13 @@ public class TeacherDao {
      * @return ¿œ ¶
      */
 
-    public BaseObject query(String number) {
+    public Teacher query(String number) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "SELECT * FROM teacher WHERE number = ?";
+        String sql4 = "SELECT * FROM teacher WHERE number = ?";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
-                ps = connection.prepareStatement(sql2);
+                ps = connection.prepareStatement(sql4);
             }
             if (ps != null) {
                 ps.setString(1, number);
@@ -144,11 +167,11 @@ public class TeacherDao {
 
     public Vector<Vector> queryAll() {
         Connection connection = DBconnection.getConnection();
-        String sql = "SELECT * FROM teacher";
+        String sql5 = "SELECT * FROM teacher";
         try {
             PreparedStatement ps = null;
             if (connection != null) {
-                ps = connection.prepareStatement(sql);
+                ps = connection.prepareStatement(sql5);
             }
             ResultSet rs = null;
             if (ps != null) {

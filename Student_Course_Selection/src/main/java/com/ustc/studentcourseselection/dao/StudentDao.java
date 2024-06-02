@@ -22,7 +22,7 @@ public class StudentDao {
      * @param baseObject 学生
      * @return 布尔值
      */
-    public boolean add(BaseObject baseObject) {
+    public boolean addStudent(BaseObject baseObject) {
         Student student = (Student) baseObject;
         Connection connection = DBconnection.getConnection();
         String sql1 = "INSERT INTO student(id,name,number,gender,grade,degree,major,className,password,createTime,updateTime) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
@@ -48,7 +48,6 @@ public class StudentDao {
             if (ps != null) {
                 result = ps.executeUpdate() > 0;
             }
-            DBconnection.closeConnection(null, null, connection);
             return result;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -65,7 +64,7 @@ public class StudentDao {
      * @return 布尔值
      */
 
-    public boolean del(String number) {
+    public boolean delStudent(String number) {
         Connection connection = DBconnection.getConnection();
         String sql2 = "DELETE FROM student WHERE number = ?";
         PreparedStatement ps = null;
@@ -80,7 +79,6 @@ public class StudentDao {
             if (ps != null) {
                 result = ps.executeUpdate() > 0;
             }
-            DBconnection.closeConnection(null, ps, connection);
             return result;
         } catch (Exception e) {
             System.out.println(e.getMessage());
