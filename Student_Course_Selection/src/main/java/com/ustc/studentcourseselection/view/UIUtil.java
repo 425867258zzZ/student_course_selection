@@ -4,12 +4,10 @@ import com.ustc.studentcourseselection.model.BaseUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
+
 
 /**
  * UI组件的工具方法
@@ -173,26 +171,17 @@ public class UIUtil {
      * 如果需要修改列宽，需要对table某一列设置宽度
      * 返回表格table后，不要忘了scrollPane.setViewportView(table)使表格可见
      *
-     * @param header 表头，如果每一行末尾有按钮如：“编辑”“选课”等，表头中不要漏了“操作”一列
-     * @param datas  数据，每一列与表头对应
      * @return 表格
      */
-    public static JTable creatTable(Vector<String> header, Vector<Vector<String>> datas) {
+    public static JTable creatTable() {
         JTable table = new JTable();
+
         // 设置表格属性
         table.setBackground(Color.WHITE);
-        table.setModel(new DefaultTableModel(datas, header));
         table.setRowHeight(25);
         table.setDefaultEditor(Object.class, null);
         table.setFocusable(false);
         table.setFont(new Font("微软雅黑", Font.PLAIN, 12));
-
-        // 居中显示
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
 
         //鼠标移动到某一表格式，会显示表格内容，避免因长度丢失内容
         table.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -201,14 +190,10 @@ public class UIUtil {
                 int row = table.rowAtPoint(evt.getPoint());
                 int column = table.columnAtPoint(evt.getPoint());
 
-                // 获取单元格中的内容
                 Object value = table.getValueAt(row, column);
-
-                // 将内容设置为工具提示
                 table.setToolTipText((String) value);
             }
         });
-
         return table;
     }
 

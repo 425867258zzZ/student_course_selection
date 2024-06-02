@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 
-
 /**
  * 课程与数据库交互逻辑
  *
@@ -24,21 +23,13 @@ public class CourseDao {
      */
     public static int selectCount(int id) {
         Connection connection = DBconnection.getConnection();
-        String sql = """
-                SELECT course_id, COUNT(student_id) AS student_count
-                FROM student_course
-                WHERE course_id = ?
-                GROUP BY course_id;""";
+        String sql = "SELECT COUNT(*) FROM student_course WHERE course_id = ?";
         if (connection != null) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1, id);
                 try (ResultSet resultSet = ps.executeQuery()) {
-                    if (resultSet.getRow() == 0) {
-                        return 0;
-                    }
                     if (resultSet.next()) {
-                        System.out.println(1);
-                        return resultSet.getInt("student_count");
+                        return resultSet.getInt(1);
                     }
                 }
             } catch (Exception e) {
@@ -49,30 +40,30 @@ public class CourseDao {
     }
 
     /**
-     * 增加数据
+     * 增加课程数据
      *
      * @param course 课程
      * @return 是否成功
      */
     public boolean addCourse(Course course) {
         Connection connection = DBconnection.getConnection();
-        String sql1 = "INSERT INTO course(id,number,course_name,course_time,major,location,score,capacity,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String sql1 = "INSERT INTO course(id,number,course_name,course_time,major,location,teacher_name,score,capacity,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
                 ps = connection.prepareStatement(sql1);
             }
             if (ps != null) {
-                ps.setInt(1, course.getId());
-                ps.setString(2, course.getNumber());
-                ps.setString(3, course.getCourseName());
-                ps.setString(4, course.getCourseTime());
-                ps.setString(5, course.getMajor());
-                ps.setString(6, course.getLocation());
+                ps.setString(1, course.getNumber());
+                ps.setString(2, course.getCourseName());
+                ps.setString(3, course.getCourseTime());
+                ps.setString(4, course.getMajor());
+                ps.setString(5, course.getLocation());
+                ps.setString(6, course.getTeacherName());
                 ps.setInt(7, course.getScore());
                 ps.setInt(8, course.getCapacity());
-                ps.setString(9, course.getCreateTime());
-                ps.setString(10, course.getUpdateTime());
+                ps.setString(9, BaseUtils.getTime());
+                ps.setInt(10, course.getId());
             }
             if (ps != null) {
                 return ps.executeUpdate() > 0;
@@ -121,7 +112,7 @@ public class CourseDao {
      */
     public boolean update(Course course) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "UPDATE course SET number=?,course_name=?,course_time=?,major=?,location=?,score=?,capacity=?, update_time=? WHERE id=?";
+        String sql2 = "UPDATE course SET number=?,course_name=?,course_time=?,major=?,location=?,course.teacher_name=?,score=?,capacity=?, update_time=? WHERE id=?";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
@@ -133,10 +124,11 @@ public class CourseDao {
                 ps.setString(3, course.getCourseTime());
                 ps.setString(4, course.getMajor());
                 ps.setString(5, course.getLocation());
-                ps.setInt(6, course.getScore());
-                ps.setInt(7, course.getCapacity());
-                ps.setString(8, BaseUtils.getTime());
-                ps.setInt(9, course.getId());
+                ps.setString(6, course.getTeacherName());
+                ps.setInt(7, course.getScore());
+                ps.setInt(8, course.getCapacity());
+                ps.setString(9, BaseUtils.getTime());
+                ps.setInt(10, course.getId());
             }
             if (ps != null) {
                 return ps.executeUpdate() > 0;
@@ -173,7 +165,7 @@ public class CourseDao {
             }
             if (rs != null && rs.next()) {
                 return new Course(rs.getInt("id"), rs.getString("number"), rs.getString("course_name"),
-                        rs.getString("course_time"), rs.getString("major"), rs.getString("location"), rs.getInt("score"), rs.getInt("capacity"), rs.getString("create_time"), rs.getString("update_time"));
+                        rs.getString("course_time"), rs.getString("major"), rs.getString("location"), rs.getString("teacher_name"), rs.getInt("score"), rs.getInt("capacity"), rs.getString("create_time"), rs.getString("update_time"));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -186,7 +178,7 @@ public class CourseDao {
     /**
      * 查询所有课程
      *
-     * @return 所有课程
+     * @return 所有课程, Vector<Vector < String>>
      */
     public Vector<Vector<String>> queryAll() {
         Connection connection = DBconnection.getConnection();
@@ -208,8 +200,9 @@ public class CourseDao {
                     course.add(rs.getString("number"));
                     course.add(rs.getString("course_name"));
                     course.add(rs.getString("course_time"));
-                    course.add(rs.getString("major"));
+                    course.add(rs.getString("major") + "学院");
                     course.add(rs.getString("location"));
+                    course.add(rs.getString("teacher_name"));
                     course.add(rs.getString("score"));
                     course.add(selectCount);
                     course.add(rs.getString("capacity"));

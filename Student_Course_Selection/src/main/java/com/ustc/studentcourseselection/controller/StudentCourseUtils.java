@@ -4,8 +4,12 @@ import com.ustc.studentcourseselection.dao.CourseDao;
 import com.ustc.studentcourseselection.dao.StudentCourseDao;
 import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Course;
+import com.ustc.studentcourseselection.model.Student;
 
 import java.util.List;
+import java.util.Vector;
+
+import static com.ustc.studentcourseselection.dao.CourseDao.selectCount;
 
 /**
  * @author ÃÏè÷êÏ
@@ -61,5 +65,41 @@ public class StudentCourseUtils {
             return 3;
         }
         return 4;
+    }
+
+    public static boolean quitCourse(int studentId, String courseNumber) {
+        CourseDao courseDao = new CourseDao();
+        StudentCourseDao studentCourseDao = new StudentCourseDao();
+        Course thisCourse = courseDao.query(courseNumber);
+
+        return studentCourseDao.removeCourseForStudent(studentId, thisCourse.getId());
+    }
+
+    public static void refreshCourseForChooseCourse(Vector<Vector<String>> courseData) {
+        CourseDao courseDao = new CourseDao();
+        for (Vector<String> course : courseData) {
+            Course thisCourse = courseDao.query(course.getFirst());
+            String studentNow = Integer.toString(CourseDao.selectCount(thisCourse.getId()));
+            course.set(7, studentNow);
+        }
+    }
+
+    public static void refreshCourseForCourseChosen(Vector<Vector<String>> courseData, Student student) {
+        courseData.clear();
+        StudentCourseDao studentCourseDao = new StudentCourseDao();
+        List<Course> courses = studentCourseDao.getCoursesForStudent(student.getId());
+        for (Course course : courses) {
+            Vector<String> rowData = new Vector<>();
+            rowData.add(course.getNumber());
+            rowData.add(course.getCourseName());
+            rowData.add(course.getCourseTime());
+            rowData.add(course.getMajor() + "Ñ§Ôº");
+            rowData.add(course.getLocation());
+            rowData.add(course.getTeacherName());
+            rowData.add(Integer.toString(course.getScore()));
+            rowData.add(Integer.toString(selectCount(course.getId())));
+            rowData.add(Integer.toString(course.getCapacity()));
+            courseData.add(rowData);
+        }
     }
 }

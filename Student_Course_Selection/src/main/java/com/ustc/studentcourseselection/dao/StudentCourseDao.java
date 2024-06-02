@@ -101,7 +101,7 @@ public class StudentCourseDao {
             }
             while (rs != null && rs.next()) {
                 Course course = new Course(rs.getInt("id"), rs.getString("number"), rs.getString("course_name"),
-                        rs.getString("course_time"), rs.getString("major"), rs.getString("location"), rs.getInt("score"), rs.getInt("capacity"), rs.getString("create_time"), rs.getString("update_time"));
+                        rs.getString("course_time"), rs.getString("major"), rs.getString("location"), rs.getString("teacher_name"), rs.getInt("score"), rs.getInt("capacity"), rs.getString("create_time"), rs.getString("update_time"));
                 courses.add(course);
             }
             return courses;

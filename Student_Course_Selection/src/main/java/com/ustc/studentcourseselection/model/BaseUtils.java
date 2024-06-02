@@ -1,7 +1,5 @@
 package com.ustc.studentcourseselection.model;
 
-import com.sun.tools.javac.Main;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,7 +26,7 @@ public final class BaseUtils {
      */
     public static int[][] readCourseTime(String courseTime) {
         int[][] time = new int[5][13];
-        String[] fCourseTimes = courseTime.split(",");
+        String[] fCourseTimes = courseTime.split("，");
         for (String fTime : fCourseTimes) {
             //获取具体哪一天
             String day = fTime.substring(0, 2);
@@ -48,15 +46,5 @@ public final class BaseUtils {
             }
         }
         return time;
-    }
-
-    public static void main(String[] args) {
-        int[][] t = readCourseTime("周一(1、2),周二(3、4)");
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 13; j++) {
-                System.out.print(t[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 }

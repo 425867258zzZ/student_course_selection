@@ -3,10 +3,10 @@ package com.ustc.studentcourseselection.view.mainmenu.student;
 import com.ustc.studentcourseselection.model.Student;
 import com.ustc.studentcourseselection.view.MainMenu;
 import com.ustc.studentcourseselection.view.UIUtil;
-import com.ustc.studentcourseselection.view.mainmenu.student.panel.CourseChoosePanel;
-import com.ustc.studentcourseselection.view.mainmenu.student.panel.personalInfoPanel;
+import com.ustc.studentcourseselection.view.mainmenu.student.panel.ChooseCoursePanelAbstract;
+import com.ustc.studentcourseselection.view.mainmenu.student.panel.CourseChosenPanelAbstract;
+import com.ustc.studentcourseselection.view.mainmenu.student.panel.PersonalInfoPanel;
 
-import java.awt.*;
 import javax.swing.*;
 import java.io.Serial;
 
@@ -30,19 +30,17 @@ public class StudentMenu extends MainMenu {
         JButton allCourseButton = UIUtil.addSideButton(leftSidePanel, "src/main/resources/images/side/course_white.png", "    所有课程", 270);
         JButton logout = UIUtil.addSideButton(leftSidePanel, "src/main/resources/images/side/logout_white.png", "    退出登录", 325);
 
-        JPanel personalInfoPanel = new personalInfoPanel(student);
+        JPanel personalInfoPanel = new PersonalInfoPanel(student);
         mainPanel.add(personalInfoPanel, "personalInfo");
         personInfoButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, personalInfoPanel, "        个人信息        "));
 
-        JPanel courseChosenPanel = new JPanel();
-        courseChosenPanel.setBackground(Color.WHITE);
-        courseChosenPanel.add(new JLabel("这里是已选课程面板"));
+        JPanel courseChosenPanel = new CourseChosenPanelAbstract(student);
         mainPanel.add(courseChosenPanel, "courseChosen");
         courseChosenButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, courseChosenPanel, "        已选课程        "));
 
-        JPanel allCoursePanel = new CourseChoosePanel(student);
-        mainPanel.add(allCoursePanel, "allCourse");
-        allCourseButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, allCoursePanel, "        所有课程        "));
+        JPanel chooseCoursePanel = new ChooseCoursePanelAbstract(student);
+        mainPanel.add(chooseCoursePanel, "allCourse");
+        allCourseButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, chooseCoursePanel, "        所有课程        "));
 
         logout.addActionListener(e -> {
             int choice = JOptionPane.showConfirmDialog(contentPane, "确定要退出登录吗?", "退出登录", JOptionPane.YES_NO_OPTION);
