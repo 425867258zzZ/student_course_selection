@@ -11,8 +11,8 @@ import java.awt.*;
 /**
  * @author ASUS
  */
-public class personalInfoPanel extends Panel {
-    public personalInfoPanel(Student student) {
+public class PersonalInfoPanel extends Panel {
+    public PersonalInfoPanel(Student student) {
         super();
 
         JPanel basicPanel = new JPanel();

@@ -18,16 +18,18 @@ public class Course extends BaseObject {
     private String courseTime;
     private String major;
     private String location;
+    private String teacherName;
     private int score;
     private int capacity;
 
-    public Course(int id, String number, String courseName, String courseTime, String major, String location, int score, int capacity, String createTime, String updateTime) {
+    public Course(int id, String number, String courseName, String courseTime, String major, String location, String teacherName, int score, int capacity, String createTime, String updateTime) {
         super(id, createTime, updateTime);
         this.number = number;
         this.courseName = courseName;
         this.courseTime = courseTime;
         this.major = major;
         this.location = location;
+        this.teacherName = teacherName;
         this.score = score;
         this.capacity = capacity;
     }
@@ -70,6 +72,14 @@ public class Course extends BaseObject {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public int getScore() {
