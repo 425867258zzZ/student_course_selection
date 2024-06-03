@@ -12,6 +12,8 @@ import java.util.Vector;
 import static com.ustc.studentcourseselection.dao.CourseDao.selectCount;
 
 /**
+ * The type Student course utils.
+ *
  * @author ÃÏè÷êÏ
  */
 public class StudentCourseUtils {
@@ -67,14 +69,25 @@ public class StudentCourseUtils {
         return 4;
     }
 
+    /**
+     * Quit course boolean.
+     *
+     * @param studentId    the student id
+     * @param courseNumber the course number
+     * @return the boolean
+     */
     public static boolean quitCourse(int studentId, String courseNumber) {
         CourseDao courseDao = new CourseDao();
         StudentCourseDao studentCourseDao = new StudentCourseDao();
         Course thisCourse = courseDao.query(courseNumber);
-
         return studentCourseDao.removeCourseForStudent(studentId, thisCourse.getId());
     }
 
+    /**
+     * Refresh course for choose course.
+     *
+     * @param courseData the course data
+     */
     public static void refreshCourseForChooseCourse(Vector<Vector<String>> courseData) {
         CourseDao courseDao = new CourseDao();
         for (Vector<String> course : courseData) {
@@ -84,6 +97,12 @@ public class StudentCourseUtils {
         }
     }
 
+    /**
+     * Refresh course for course chosen.
+     *
+     * @param courseData the course data
+     * @param student    the student
+     */
     public static void refreshCourseForCourseChosen(Vector<Vector<String>> courseData, Student student) {
         courseData.clear();
         StudentCourseDao studentCourseDao = new StudentCourseDao();
@@ -102,4 +121,5 @@ public class StudentCourseUtils {
             courseData.add(rowData);
         }
     }
+    
 }

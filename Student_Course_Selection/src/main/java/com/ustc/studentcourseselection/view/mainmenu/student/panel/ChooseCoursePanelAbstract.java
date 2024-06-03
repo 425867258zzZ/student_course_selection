@@ -28,7 +28,7 @@ public class ChooseCoursePanelAbstract extends AbstractStudentPanel {
         add(scrollPane);
 
         CourseDao courseDao = new CourseDao();
-        courseData = courseDao.queryAll();
+        courseData = courseDao.queryAll(null, null, null, null);
 
         setTableData(table, scrollPane, header, courseData);
         table.getColumnModel().getColumn(9).setCellRenderer(new ChooseButton());
@@ -36,6 +36,80 @@ public class ChooseCoursePanelAbstract extends AbstractStudentPanel {
 
         refreshBt.addActionListener(e -> {
             refreshButtonClick(student);
+            setTableData(table, scrollPane, header, courseData);
+            table.getColumnModel().getColumn(9).setCellRenderer(new ChooseButton());
+            table.getColumnModel().getColumn(9).setCellEditor(new ChooseButtonEditor(table, student));
+        });
+
+        JLabel courseNum = new JLabel("¿Î³ÌºÅ:");
+        courseNum.setForeground(Color.black);
+        courseNum.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseNum.setBounds(110, 13, 95, 25);
+        add(courseNum);
+
+        JLabel courseNam = new JLabel("¿Î³ÌÃû:");
+        courseNam.setForeground(Color.black);
+        courseNam.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseNam.setBounds(260, 13, 95, 25);
+        add(courseNam);
+
+        JLabel courseMaj = new JLabel("¿ª¿ÎÔºÏµ:");
+        courseMaj.setForeground(Color.black);
+        courseMaj.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseMaj.setBounds(410, 13, 95, 25);
+        add(courseMaj);
+
+        JLabel courseTea = new JLabel("ÀÏÊ¦ÐÕÃû:");
+        courseTea.setForeground(Color.black);
+        courseTea.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseTea.setBounds(600, 13, 95, 25);
+        add(courseTea);
+
+
+        JTextField courseNumber = new JTextField();
+        courseNumber.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseNumber.setForeground(Color.black);
+        courseNumber.setBounds(160, 13, 90, 25);
+        courseNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        courseNumber.setColumns(8);
+        add(courseNumber);
+
+        JTextField courseName = new JTextField();
+        courseName.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseName.setForeground(Color.black);
+        courseName.setBounds(310, 13, 90, 25);
+        courseName.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        courseName.setColumns(8);
+        add(courseName);
+
+        JTextField courseMajor = new JTextField();
+        courseMajor.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseMajor.setForeground(Color.black);
+        courseMajor.setBounds(474, 13, 120, 25);
+        courseMajor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        courseMajor.setColumns(8);
+        add(courseMajor);
+
+        JTextField courseTeacherName = new JTextField();
+        courseTeacherName.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 13));
+        courseTeacherName.setForeground(Color.black);
+        courseTeacherName.setBounds(664, 13, 90, 25);
+        courseTeacherName.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        courseTeacherName.setColumns(8);
+        add(courseTeacherName);
+
+
+        JButton searchBt = new JButton("ËÑË÷");
+        searchBt.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 14));
+        searchBt.setForeground(Color.WHITE);
+        searchBt.setBackground(new Color(0, 64, 128));
+        searchBt.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        searchBt.setFocusPainted(false);
+        searchBt.setBounds(883, 10, 80, 34);
+        add(searchBt);
+
+        searchBt.addActionListener(e -> {
+            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), courseMajor.getText(), courseTeacherName.getText());
             setTableData(table, scrollPane, header, courseData);
             table.getColumnModel().getColumn(9).setCellRenderer(new ChooseButton());
             table.getColumnModel().getColumn(9).setCellEditor(new ChooseButtonEditor(table, student));
@@ -90,8 +164,7 @@ public class ChooseCoursePanelAbstract extends AbstractStudentPanel {
                             JOptionPane.showConfirmDialog(scrollPane, "Ñ¡¿Î³É¹¦£¡", "ÌáÊ¾", JOptionPane.DEFAULT_OPTION);
                 }
                 // Ë¢ÐÂÊý¾Ý
-                CourseDao courseDao = new CourseDao();
-                courseData = courseDao.queryAll();
+                StudentCourseUtils.refreshCourseForChooseCourse(courseData);
                 setTableData(table, scrollPane, header, courseData);
                 table.getColumnModel().getColumn(9).setCellRenderer(new ChooseButton());
                 table.getColumnModel().getColumn(9).setCellEditor(new ChooseButtonEditor(table, student));
