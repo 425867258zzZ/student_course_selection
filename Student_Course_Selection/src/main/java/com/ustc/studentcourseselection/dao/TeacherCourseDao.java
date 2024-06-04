@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author 孟梓晗
  */
-public class TeacherCourseDao {
+public class teacherCourseDao {
     /**
      * 获取老师教的所有课程
      *
