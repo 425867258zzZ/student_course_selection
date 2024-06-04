@@ -3,7 +3,9 @@ package com.ustc.studentcourseselection.view;
 import com.ustc.studentcourseselection.controller.LoginUtils;
 import com.ustc.studentcourseselection.model.BaseObject;
 import com.ustc.studentcourseselection.model.Student;
+import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.mainmenu.student.StudentMenu;
+import com.ustc.studentcourseselection.view.mainmenu.teacher.TeacherMenu;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -86,9 +88,15 @@ public class Login extends JFrame {
             String numberInput = numberField.getText();
             String password = new String(passwordField.getPassword());
             BaseObject object = LoginUtils.loginConfirm(numberInput, password);
-            if (object != null) {
+            if (object instanceof Student) {
                 Student student = (Student) object;
                 StudentMenu mainWindow = new StudentMenu(student);
+                mainWindow.setVisible(true);
+                // 关闭登录界面
+                dispose();
+            } else if (object instanceof Teacher) {
+                Teacher teacher = (Teacher) object;
+                TeacherMenu mainWindow = new TeacherMenu(teacher);
                 mainWindow.setVisible(true);
                 // 关闭登录界面
                 dispose();

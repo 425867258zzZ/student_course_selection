@@ -10,12 +10,12 @@ public class Teacher extends BaseObject {
     private String password;
     private String department;
 
-    public Teacher(int id, String name, String number, String gender, String department, String password, String createTime, String updateTime) {
+    public Teacher(int id, String name, String number, String gender, String department,String password, String createTime, String updateTime) {
         super(id, createTime, updateTime);
         this.name = name;
         this.number = number;
         this.gender = gender;
-        this.department = department;
+        this.department = department;;
         this.password = password;
     }
 
@@ -65,7 +65,6 @@ public class Teacher extends BaseObject {
                 "name='" + name +
                 ", number='" + number +
                 ", gender='" + gender +
-                ", course='" +
                 ", department='" + department +
                 '}';
     }

@@ -16,6 +16,8 @@ import java.util.Vector;
  */
 
 public class TeacherDao {
+
+
     /**
      * ÃÌº”¿œ ¶
      *
@@ -146,9 +148,8 @@ public class TeacherDao {
             if (rs != null && rs.next()) {
                 return new Teacher(rs.getInt("Id"), rs.getString("Name"),
                         rs.getString("Number"), rs.getString("Gender"),
-                        rs.getString("Department"),
-                        rs.getString("Password"), rs.getString("CreateTime"),
-                        rs.getString("UpdateTime"));
+                        rs.getString("Department"), rs.getString("Password"),
+                        rs.getString("CreateTime"), rs.getString("UpdateTime"));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -177,20 +178,17 @@ public class TeacherDao {
                 rs = ps.executeQuery();
             }
             Vector<Vector> teachersData = new Vector<>();
-            if (rs != null) {
-                while (rs.next()) {
-                    Vector<String> teacherRow = new Vector<>();
-                    teacherRow.add(String.valueOf(rs.getInt("Id")));
-                    teacherRow.add(rs.getString("Name"));
-                    teacherRow.add(rs.getString("Number"));
-                    teacherRow.add(rs.getString("Gender"));
-                    teacherRow.add(rs.getString("Department"));
-                    teacherRow.add(rs.getString("Course"));
-                    teacherRow.add(rs.getString("Password"));
-                    teacherRow.add(rs.getString("CreateTime"));
-                    teacherRow.add(rs.getString("UpdateTime"));
-                    teachersData.add(teacherRow);
-                }
+            while (rs.next()) {
+                Vector<String> teacherRow = new Vector<>();
+                teacherRow.add(String.valueOf(rs.getInt("Id")));
+                teacherRow.add(rs.getString("Name"));
+                teacherRow.add(rs.getString("Number"));
+                teacherRow.add(rs.getString("Gender"));
+                teacherRow.add(rs.getString("Department"));
+                teacherRow.add(rs.getString("Password"));
+                teacherRow.add(rs.getString("CreateTime"));
+                teacherRow.add(rs.getString("UpdateTime"));
+                teachersData.add(teacherRow);
             }
             DBconnection.closeConnection(rs, null, connection);
             return teachersData;

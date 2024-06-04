@@ -21,7 +21,7 @@ public class TeacherCourseDao {
      * @param teacherName 老师名字
      * @return 该老师教的所有课程
      */
-    public List<Course> getCoursesForTeacher(String teacherName) {
+    public static List<Course> getCoursesForTeacher(String teacherName) {
         Connection connection = DBconnection.getConnection();
         String sql3 = "SELECT course.* FROM course WHERE teacher_name = ?";
         List<Course> courses = new ArrayList<>();
