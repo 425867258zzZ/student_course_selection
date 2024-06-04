@@ -7,7 +7,6 @@ public class Teacher extends BaseObject {
     private String name;
     private String number;
     private String gender;
-
     private String password;
     private String department;
 

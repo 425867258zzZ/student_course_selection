@@ -180,9 +180,21 @@ public class CourseDao {
      *
      * @return ËùÓÐ¿Î³Ì, Vector<Vector < String>>
      */
-    public Vector<Vector<String>> queryAll() {
+    public Vector<Vector<String>> queryAll(String courseNumber, String courseName, String courseMajor, String courseTeacherName) {
         Connection connection = DBconnection.getConnection();
-        String sql2 = "SELECT * FROM course";
+        String sql2 = "SELECT * FROM course WHERE 1=1";
+        if (courseNumber != null && !courseNumber.isEmpty()) {
+            sql2 += " AND number LIKE '%" + courseNumber + "%'";
+        }
+        if (courseName != null && !courseName.isEmpty()) {
+            sql2 += " AND course_name LIKE '%" + courseName + "%'";
+        }
+        if (courseMajor != null && !courseMajor.isEmpty()) {
+            sql2 += " AND major LIKE '%" + courseMajor + "%'";
+        }
+        if (courseTeacherName != null && !courseTeacherName.isEmpty()) {
+            sql2 += " AND teacher_name LIKE '%" + courseTeacherName + "%'";
+        }
         PreparedStatement ps = null;
         try {
             if (connection != null) {

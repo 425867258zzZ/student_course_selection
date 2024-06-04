@@ -13,8 +13,6 @@ import java.awt.*;
  */
 public class PersonalInfoPanel extends Panel {
     public PersonalInfoPanel(Student student) {
-        super();
-
         JPanel basicPanel = new JPanel();
         basicPanel.setLayout(null);
         basicPanel.setBackground(new Color(240, 240, 220));
