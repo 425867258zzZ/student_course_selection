@@ -3,6 +3,16 @@ package com.ustc.studentcourseselection.view.mainmenu.teacher.panel;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.UIUtil;
 import org.jetbrains.annotations.NotNull;
+import com.ustc.studentcourseselection.model.Course;
+import com.ustc.studentcourseselection.model.Teacher;
+import com.ustc.studentcourseselection.util.DBconnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 import java.awt.*;
@@ -78,15 +88,58 @@ public class PersonalInfoPanel extends JPanel {
         rTitle1.setBounds(12, 300, 200, 30);
         majorPanel.add(rTitle1);
 
+        JLabel message = getMessage(teacher.getName());
+        majorPanel.add(message);
 
     }
 
     @NotNull
     private static JLabel getjLabel() {
-        String text = "暂无";
+        String text = "<html>请认真阅读选课规则和操作说明,核对本人专业。调整修读专业,方向,英才班等信息，请联系学生所在院系教学秘书重新置课或自主选课，专业未生效的请联系郑海宁老师，英才班和强基班未生效的请联系林晓立老师。课堂容量：个性化选课可申请人数+已选中人数（含审核通过），部分课程不开放个性化申请或限制课堂容量。选课上限人数与课堂容量由课程组和开课单位教学秘书管理。核心通识课程模块分类在进入选课后选择“推荐培养方案内课程”页面，选择核心通识模块分类进行查询。信智部的同学建议在二年级春季学期之前完成低年级课程及通识类课程等学分要求.<br>概率论与数理统计选课咨询17系63600282，mjjiang@ustc.edu.cn;大学物理实验请咨询物理实验中心63601863第一教学楼229室clh@ustc.edu.cn。光学、力学、热学、原子物理、电磁学咨询物理学院63600719，Lxh89@ustc.edu.cn。体育课选课咨询：体育教学中心 63601969，yxd1991@ustc.edu.cn;上课地点ARTS404/ARTS403基础体育为女生课；英语课选课咨询：外语教学中心 63601920，english6@ustc.edu.cn；思政课选课咨询：马克思主义学院 63607992 xfen68@ustc.edu.cn";
         JLabel info = new JLabel(text);
         info.setFont(new Font("微软雅黑", Font.PLAIN, 12));
         info.setBounds(20, 20, 450, 305);
+        return info;
+    }
+
+    private static JLabel getMessage(String teacherName) {
+
+        Connection connection = DBconnection.getConnection();
+        String sql = "SELECT number, course_name FROM course WHERE teacher_name = ?";
+        StringBuilder result = new StringBuilder();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            if (connection != null) {
+                ps = connection.prepareStatement(sql);
+            }
+            if (ps != null) {
+                ps.setString(1, teacherName);
+                rs = ps.executeQuery();
+            }
+
+            boolean first = true;
+            // 用于标记是否为第一个课程
+            while (rs != null && rs.next()) {
+                if (!first) {
+                    result.append(", ");
+            // 在非第一个课程后面添加逗号和空格
+                } else {
+                    first = false;
+                }
+                result.append(rs.getString("number")).append(":").append(rs.getString("course_name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBconnection.closeConnection(rs, ps, connection);
+        }
+
+        String text = result.toString();
+        JLabel info = new JLabel(text);
+        info.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+        info.setBounds(20, 240, 450, 305);
         return info;
     }
 }

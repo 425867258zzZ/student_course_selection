@@ -3,8 +3,8 @@ package com.ustc.studentcourseselection.view.mainmenu.teacher;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.MainMenu;
 import com.ustc.studentcourseselection.view.UIUtil;
-import com.ustc.studentcourseselection.view.mainmenu.teacher.panel.ClassInfoPanel;
-import com.ustc.studentcourseselection.view.mainmenu.teacher.panel.CourseInfoPanel;
+import com.ustc.studentcourseselection.view.mainmenu.teacher.panel.CourseInfoPanelAbstract;
+import com.ustc.studentcourseselection.view.mainmenu.teacher.panel.ClassInfoPanelAbstract;
 import com.ustc.studentcourseselection.view.mainmenu.teacher.panel.PersonalInfoPanel;
 
 import java.awt.*;
@@ -35,15 +35,13 @@ public class TeacherMenu extends MainMenu {
         mainPanel.add(personalInfoPanel, "PersonalInfo");
         personInfoButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, personalInfoPanel, "        个人信息        "));
 
-        JPanel courseInfoPanel = new CourseInfoPanel(teacher);
+        JPanel courseInfoPanel = new CourseInfoPanelAbstract(teacher);
         courseInfoPanel.setBackground(Color.WHITE);
-        courseInfoPanel.add(new JLabel("这里是课程信息面板"));
         mainPanel.add(courseInfoPanel, "CourseInfo");
         courseChosenButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, courseInfoPanel, "        课程信息        "));
 
-        JPanel classInfoPanel = new ClassInfoPanel(teacher);
+        JPanel classInfoPanel = new ClassInfoPanelAbstract(teacher);
         classInfoPanel.setBackground(Color.WHITE);
-        classInfoPanel.add(new JLabel("这里是班级信息面板"));
         mainPanel.add(classInfoPanel, "ClassInfo");
         allCourseButton.addActionListener(e -> UIUtil.showOrSwitchToPanel(mainPanel, tabbedPane, classInfoPanel, "        班级信息        "));
 

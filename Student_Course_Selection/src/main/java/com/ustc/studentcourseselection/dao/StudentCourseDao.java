@@ -119,7 +119,7 @@ public class StudentCourseDao {
      * @param courseId 课程id
      * @return 所有选了该课的学生
      */
-    public List<Student> getStudentsForCourse(int courseId) {
+    public static List<Student> getStudentsForCourse(int courseId) {
         List<Student> students = new ArrayList<>();
         Connection connection = DBconnection.getConnection();
         String sql4 =

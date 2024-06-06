@@ -115,7 +115,7 @@ public class Login extends JFrame {
         contentPane.add(findPasswordBt);
 
 
-        JLabel updatePasswordBt = new JLabel("ÐÞ¸Ä/");
+        JLabel updatePasswordBt = new JLabel("ÐÞ¸Ä");
         updatePasswordBt.setForeground(Color.BLACK);
         updatePasswordBt.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 11));
         updatePasswordBt.setCursor(new Cursor(Cursor.HAND_CURSOR));

@@ -197,5 +197,16 @@ public class UIUtil {
         return table;
     }
 
+    public static void showScaledIconMessage(Component parentComponent, String message, String title, Icon icon) {
+        Image image = ((ImageIcon) icon).getImage();
+        int width = 30;
+        int height = 30;
+        Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        Icon scaledIcon = new ImageIcon(scaledImage);
+        JOptionPane.showOptionDialog(parentComponent, message, title,
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, scaledIcon,
+                new Object[]{"确定"}, "确定");
+    }
+
 }
 

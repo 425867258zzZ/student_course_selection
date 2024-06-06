@@ -1,6 +1,7 @@
 package com.ustc.studentcourseselection.dao;
 
 import com.ustc.studentcourseselection.model.Course;
+import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.util.DBconnection;
 
 import java.sql.Connection;
@@ -49,6 +50,15 @@ public class TeacherCourseDao {
             DBconnection.closeConnection(rs, ps, connection);
         }
         return null;
+    }
+
+    /**
+     * ÀÏÊ¦¸Ä¿Î
+     *
+     */
+    public boolean update(int teacher){
+
+        return false;
     }
 }
 
