@@ -2,6 +2,8 @@ package com.ustc.studentcourseselection.controller;
 
 import com.ustc.studentcourseselection.dao.CourseDao;
 import com.ustc.studentcourseselection.dao.StudentCourseDao;
+import com.ustc.studentcourseselection.dao.TeacherCourseDao;
+import com.ustc.studentcourseselection.dao.TeacherDao;
 import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Course;
 import com.ustc.studentcourseselection.model.Student;
@@ -10,10 +12,13 @@ import com.ustc.studentcourseselection.util.DBconnection;
 import com.ustc.studentcourseselection.view.UIUtil;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+
 
 
 /**
@@ -111,11 +116,11 @@ public class TeacherCourseUtils {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton addButton = new JButton("添加课程");
-        addButton.setForeground(Color.BLACK);
-        addButton.setBackground(new Color(225, 255, 255));
-        addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        addButton.setFocusPainted(false);
+        JButton searchButton = new JButton("添加课程");
+        searchButton.setForeground(Color.BLACK);
+        searchButton.setBackground(new Color(225, 255, 255));
+        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        searchButton.setFocusPainted(false);
 
         // 添加一行空数据并设置为可编辑
         Object[] emptyRow = new Object[tableModel.getColumnCount()];
@@ -124,9 +129,9 @@ public class TeacherCourseUtils {
 
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.add(scrollPane, BorderLayout.CENTER);
-        contentPane.add(addButton, BorderLayout.SOUTH);
+        contentPane.add(searchButton, BorderLayout.SOUTH);
 
-        addButton.addActionListener(e -> addCourseToDatabase(tableModel,frame));
+        searchButton.addActionListener(e -> addCourseToDatabase(tableModel,frame));
 
         frame.setContentPane(contentPane);
         frame.pack();
@@ -157,7 +162,6 @@ public class TeacherCourseUtils {
                 if(isnull){
                     Icon customIcon = new ImageIcon("src/main/resources/images/error.png");
                     UIUtil.showScaledIconMessage(scrollPane, "申请失败！不能有空值！","提示", customIcon);
-                    frame.dispose();
                 }
                 ps.setString(1, (String) row.get(0));
                 ps.setString(2, (String) row.get(1));
@@ -258,6 +262,58 @@ public class TeacherCourseUtils {
                 });
             }
         }
+        //搜索功能
+
+        JLabel stuNum = new JLabel("学号:");
+        stuNum.setForeground(Color.black);
+        stuNum.setFont(new Font("微软雅黑", Font.PLAIN, 13));
+        stuNum.setBounds(110, 13, 95, 25);
+
+        JLabel courseNam = new JLabel("姓名:");
+        courseNam.setForeground(Color.black);
+        courseNam.setFont(new Font("微软雅黑", Font.PLAIN, 13));
+        courseNam.setBounds(260, 13, 95, 25);
+
+        JTextField stuNumber = new JTextField();
+        stuNumber.setFont(new Font("微软雅黑", Font.PLAIN, 13));
+        stuNumber.setForeground(Color.black);
+        stuNumber.setBounds(160, 13, 90, 25);
+        stuNumber.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        stuNumber.setColumns(8);
+
+        JTextField stuName = new JTextField();
+        stuName.setFont(new Font("微软雅黑", Font.PLAIN, 13));
+        stuName.setForeground(Color.black);
+        stuName.setBounds(310, 13, 90, 25);
+        stuName.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        stuName.setColumns(8);
+
+        JButton searchButton = new JButton("搜索");
+        searchButton.setForeground(Color.BLACK);
+        searchButton.setBackground(new Color(225, 255, 255));
+        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        searchButton.setFocusPainted(false);
+
+        searchButton.addActionListener(e -> {
+            Vector<Vector<String>> stuData;
+            stuData = TeacherCourseDao.searchStuByNumber(stuNumber.getText(), stuName.getText());
+            model.setRowCount(0);
+            if (stuData != null) {
+                for (Vector<String> student : stuData) {
+                    model.addRow(new Vector<>(student));
+                }
+            }
+
+
+        });
+
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        inputPanel.add(stuNum);
+        inputPanel.add(stuNumber);
+        inputPanel.add(courseNam);
+        inputPanel.add(stuName);
+        inputPanel.add(searchButton);
+        frame.add(inputPanel, BorderLayout.NORTH);
 
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -266,7 +322,101 @@ public class TeacherCourseUtils {
         frame.setLocationRelativeTo(null);
     }
 
+    public static JLabel getMessage(String teacherName) {
+
+        Connection connection = DBconnection.getConnection();
+        String sql = "SELECT number, course_name FROM course WHERE teacher_name = ?";
+        StringBuilder result = new StringBuilder();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            if (connection != null) {
+                ps = connection.prepareStatement(sql);
+            }
+            if (ps != null) {
+                ps.setString(1, teacherName);
+                rs = ps.executeQuery();
+            }
+
+            boolean first = true;
+            // 用于标记是否为第一个课程
+            while (rs != null && rs.next()) {
+                if (!first) {
+                    result.append(", ");
+                    // 在非第一个课程后面添加逗号和空格
+                } else {
+                    first = false;
+                }
+                result.append(rs.getString("number")).append(":").append(rs.getString("course_name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBconnection.closeConnection(rs, ps, connection);
+        }
+
+        String text = result.toString();
+        JLabel info = new JLabel(text);
+        info.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+        info.setBounds(20, 200, 450, 305);
+        return info;
+    }
+
+    public static void changePassword (Teacher teacher){
+
+        JFrame frame = new JFrame("修改密码");
+        JLabel oldPasswordLabel = new JLabel("输入原密码:");
+        oldPasswordLabel.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+        JPasswordField oldPasswordField = new JPasswordField(20);
+
+        JLabel newPasswordLabel = new JLabel("输入新密码:");
+        newPasswordLabel.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+        JPasswordField newPasswordField = new JPasswordField(20);
+
+        //占位标签
+        JLabel occupancy = new JLabel();
+
+        JButton changeButton = new JButton("修改");
+        changeButton.setForeground(Color.BLACK);
+        changeButton.setBackground(new Color(225, 255, 255));
+        changeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        changeButton.setFocusPainted(false);
+        JFrame tempFrame = new JFrame();
+        tempFrame.pack();
+
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+        panel.add(oldPasswordLabel);
+        panel.add(oldPasswordField);
+        panel.add(newPasswordLabel);
+        panel.add(newPasswordField);
+        panel.add(occupancy);
+        panel.add(changeButton);
+
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(panel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        changeButton.addActionListener(e -> {
+            String oldPassword = new String(oldPasswordField.getPassword());
+            String newPassword = new String(newPasswordField.getPassword());
+
+            if (teacher.getPassword().equals(oldPassword)) {
+                TeacherDao.updatePassword(teacher.getId(), newPassword);
+                teacher.setPassword(newPassword);
+                frame.dispose();
+            } else {
+                Icon customIcon = new ImageIcon("src/main/resources/images/error.png");
+                UIUtil.showScaledIconMessage(scrollPane, "原密码错误！", "提示", customIcon);
+            }
+        });
+
+    }
 }
+
+
 
 
 

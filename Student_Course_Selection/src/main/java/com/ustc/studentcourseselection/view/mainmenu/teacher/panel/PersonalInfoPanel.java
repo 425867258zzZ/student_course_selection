@@ -1,5 +1,7 @@
 package com.ustc.studentcourseselection.view.mainmenu.teacher.panel;
 
+import com.ustc.studentcourseselection.controller.TeacherCourseUtils;
+import com.ustc.studentcourseselection.dao.TeacherCourseDao;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.UIUtil;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Vector;
 
 /**
  * @author 潘义良
@@ -88,9 +91,20 @@ public class PersonalInfoPanel extends JPanel {
         rTitle1.setBounds(12, 300, 200, 30);
         majorPanel.add(rTitle1);
 
-        JLabel message = getMessage(teacher.getName());
+        JLabel message = TeacherCourseUtils.getMessage(teacher.getName());
         majorPanel.add(message);
 
+        JButton searchButton = new JButton("更改密码");
+        searchButton.setForeground(Color.BLACK);
+        searchButton.setBackground(new Color(225, 255, 255));
+        searchButton.setBounds(680, 550, 180, 30);
+        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        searchButton.setFocusPainted(false);
+        add(searchButton);
+
+        searchButton.addActionListener(e -> {
+                TeacherCourseUtils.changePassword(teacher);
+            });
     }
 
     @NotNull
@@ -102,44 +116,7 @@ public class PersonalInfoPanel extends JPanel {
         return info;
     }
 
-    private static JLabel getMessage(String teacherName) {
 
-        Connection connection = DBconnection.getConnection();
-        String sql = "SELECT number, course_name FROM course WHERE teacher_name = ?";
-        StringBuilder result = new StringBuilder();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            if (connection != null) {
-                ps = connection.prepareStatement(sql);
-            }
-            if (ps != null) {
-                ps.setString(1, teacherName);
-                rs = ps.executeQuery();
-            }
-
-            boolean first = true;
-            // 用于标记是否为第一个课程
-            while (rs != null && rs.next()) {
-                if (!first) {
-                    result.append(", ");
-            // 在非第一个课程后面添加逗号和空格
-                } else {
-                    first = false;
-                }
-                result.append(rs.getString("number")).append(":").append(rs.getString("course_name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBconnection.closeConnection(rs, ps, connection);
-        }
-
-        String text = result.toString();
-        JLabel info = new JLabel(text);
-        info.setFont(new Font("微软雅黑", Font.PLAIN, 12));
-        info.setBounds(20, 240, 450, 305);
-        return info;
-    }
 }
+
+

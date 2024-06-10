@@ -4,11 +4,14 @@ import com.ustc.studentcourseselection.model.BaseObject;
 import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.util.DBconnection;
+import com.ustc.studentcourseselection.view.UIUtil;
 
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 /**
@@ -16,7 +19,7 @@ import java.util.Vector;
  */
 
 public class TeacherDao {
-
+    public static JScrollPane scrollPane = new JScrollPane();
 
     /**
      * 添加老师
@@ -196,6 +199,53 @@ public class TeacherDao {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * 修改密码
+     *
+     */
+    public static void updatePassword(int teacherId, String newPassword) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn =  DBconnection.getConnection();
+
+            String sql = "UPDATE teacher SET password = ? WHERE id = ?";
+            if (conn != null) {
+                stmt = conn.prepareStatement(sql);
+            }
+
+            if (stmt != null) {
+                stmt.setString(1, newPassword);
+                stmt.setInt(2, teacherId);
+            }
+
+            int rowsAffected = 0;
+            if (stmt != null) {
+                rowsAffected = stmt.executeUpdate();
+            }
+            if (rowsAffected > 0) {
+                Icon customIcon = new ImageIcon("src/main/resources/images/success.png");
+                UIUtil.showScaledIconMessage(scrollPane, "修改成功！", "提示", customIcon);
+            } else {
+                Icon customIcon = new ImageIcon("src/main/resources/images/error.png");
+                UIUtil.showScaledIconMessage(scrollPane, "修改失败！", "提示", customIcon);
+            }
+        } catch (SQLException e) {
+            e.getMessage();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.getMessage();
+            }
+        }
     }
 
 }

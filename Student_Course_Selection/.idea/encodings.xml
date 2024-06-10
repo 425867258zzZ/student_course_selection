@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/main/java/com/ustc/student_course_selection/dao/StudentDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/ustc/studentcourseselection/controller/TeacherCourseUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ustc/studentcourseselection/dao/CourseDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/ustc/studentcourseselection/dao/StudentDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/ustc/studentcourseselection/dao/TeacherDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/ustc/studentcourseselection/view/Login.java" charset="GBK" />
