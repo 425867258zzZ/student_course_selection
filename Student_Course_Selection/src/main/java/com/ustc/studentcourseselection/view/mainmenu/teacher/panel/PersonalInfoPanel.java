@@ -5,6 +5,7 @@ import com.ustc.studentcourseselection.dao.TeacherDao;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.UIUtil;
 import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -114,7 +115,7 @@ public class PersonalInfoPanel extends JPanel {
      *
      * @param teacher the teacher
      */
-    public static void changePassword (Teacher teacher){
+    public static void changePassword(Teacher teacher) {
 
         JFrame frame = new JFrame("修改密码");
         JLabel oldPasswordLabel = new JLabel("输入原密码:");
@@ -155,7 +156,14 @@ public class PersonalInfoPanel extends JPanel {
             String newPassword = new String(newPasswordField.getPassword());
 
             if (teacher.getPassword().equals(oldPassword)) {
-                TeacherDao.updatePassword(teacher.getId(), newPassword);
+                boolean res = TeacherDao.updatePassword(teacher.getId(), newPassword);
+                if (res) {
+                    Icon customIcon = new ImageIcon("src/main/resources/images/success.png");
+                    UIUtil.showScaledIconMessage(scrollPane, "修改成功！", "提示", customIcon);
+                } else {
+                    Icon customIcon = new ImageIcon("src/main/resources/images/error.png");
+                    UIUtil.showScaledIconMessage(scrollPane, "修改失败！", "提示", customIcon);
+                }
                 teacher.setPassword(newPassword);
                 frame.dispose();
             } else {

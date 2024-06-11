@@ -2,6 +2,7 @@ package com.ustc.studentcourseselection.controller;
 
 import com.ustc.studentcourseselection.dao.StudentDao;
 import com.ustc.studentcourseselection.dao.TeacherDao;
+import com.ustc.studentcourseselection.model.Administrator;
 import com.ustc.studentcourseselection.model.BaseObject;
 import com.ustc.studentcourseselection.model.Student;
 import com.ustc.studentcourseselection.model.Teacher;
@@ -19,6 +20,7 @@ public class LoginUtils {
     private static final String TEACHER_START = "PT";
     private static final String ADMIN_START = "admin";
     private static final int INDEX = 2;
+    private static final String ADMIN_PASSWORD = "123456";
 
     public static BaseObject loginConfirm(String username, String password) {
         if (username.length() <= 1) {
@@ -38,10 +40,13 @@ public class LoginUtils {
                 return null;
             }
             return teacher;
+        } else if (ADMIN_START.equals(username)) {
+            if (ADMIN_PASSWORD.equals(password)) {
+                return new Administrator();
+            }
         }
         return null;
     }
-
 }
 
 

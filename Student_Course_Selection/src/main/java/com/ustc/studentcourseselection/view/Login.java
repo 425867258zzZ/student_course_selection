@@ -1,9 +1,11 @@
 package com.ustc.studentcourseselection.view;
 
 import com.ustc.studentcourseselection.controller.LoginUtils;
+import com.ustc.studentcourseselection.model.Administrator;
 import com.ustc.studentcourseselection.model.BaseObject;
 import com.ustc.studentcourseselection.model.Student;
 import com.ustc.studentcourseselection.model.Teacher;
+import com.ustc.studentcourseselection.view.mainmenu.manager.ManagerMenu;
 import com.ustc.studentcourseselection.view.mainmenu.student.StudentMenu;
 import com.ustc.studentcourseselection.view.mainmenu.teacher.TeacherMenu;
 import org.jetbrains.annotations.NotNull;
@@ -98,6 +100,17 @@ public class Login extends JFrame {
         contentPane.add(updatePasswordBt);
     }
 
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                Login frame = new Login();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+    }
+
     @NotNull
     private JButton getjButton(JTextField numberField, JPasswordField passwordField) {
         JButton loginBt = new JButton("登录");
@@ -120,23 +133,16 @@ public class Login extends JFrame {
                 mainWindow.setVisible(true);
                 // 关闭登录界面
                 dispose();
+            } else if (object instanceof Administrator administrator) {
+                ManagerMenu mainWindow = new ManagerMenu();
+                mainWindow.setVisible(true);
+                dispose();
             } else {
                 // 如果验证失败，显示错误消息
                 JOptionPane.showMessageDialog(Login.this, "用户名或密码错误", "登录失败", JOptionPane.ERROR_MESSAGE);
             }
         });
         return loginBt;
-    }
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                Login frame = new Login();
-                frame.setVisible(true);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        });
     }
 
 

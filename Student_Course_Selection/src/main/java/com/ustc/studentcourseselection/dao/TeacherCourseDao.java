@@ -2,7 +2,7 @@ package com.ustc.studentcourseselection.dao;
 
 import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Course;
-import com.ustc.studentcourseselection.util.DBconnection;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
@@ -64,7 +64,7 @@ public class TeacherCourseDao {
      * 通过学号，名字查询学生
      *
      * @param stuNumber 学号
-     * @param stuName 学生姓名
+     * @param stuName   学生姓名
      * @return 符合条件的学生
      */
     public static Vector<Vector<String>> searchStuByNumber(String stuNumber, String stuName) {
@@ -91,7 +91,7 @@ public class TeacherCourseDao {
                     student.add(rs.getString("grade"));
                     student.add(rs.getString("degree"));
                     student.add(rs.getString("major"));
-                    student.add(rs.getString("className"));
+                    student.add(rs.getString("class_Name"));
                     students.add(student);
                 }
                 return students;
@@ -116,7 +116,7 @@ public class TeacherCourseDao {
         try {
             // Loop through each row
             for (int i = 0; i < rowCount; i++) {
-                String column1Data  = table.getValueAt(i, 0).toString();
+                String column1Data = table.getValueAt(i, 0).toString();
                 String column3Data = table.getValueAt(i, 2).toString();
                 String column5Data = table.getValueAt(i, 4).toString();
                 String column9Data = table.getValueAt(i, 8).toString();
@@ -171,7 +171,7 @@ public class TeacherCourseDao {
      *
      * @param table 申请开课表
      */
-    public static boolean addCourseToDatabase(DefaultTableModel table){
+    public static boolean addCourseToDatabase(DefaultTableModel table) {
         Vector<Vector> data = table.getDataVector();
         Connection connection = null;
         PreparedStatement ps = null;
@@ -193,7 +193,7 @@ public class TeacherCourseDao {
                     ps.setString(5, (String) row.get(4));
                     ps.setString(6, (String) row.get(5));
                     ps.setFloat(7, Float.parseFloat((String) row.get(6)));
-                    ps.setInt(8, Integer.parseInt((String)row.get(7)));
+                    ps.setInt(8, Integer.parseInt((String) row.get(7)));
                     ps.setString(9, BaseUtils.getTime());
                     ps.setString(10, BaseUtils.getTime());
                     ps.addBatch();
@@ -217,7 +217,7 @@ public class TeacherCourseDao {
      *
      * @param number 课程号
      */
-    public static int getCourseId(String number){
+    public static int getCourseId(String number) {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

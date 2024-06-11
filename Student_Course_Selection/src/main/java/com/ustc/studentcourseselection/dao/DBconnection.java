@@ -1,4 +1,4 @@
-package com.ustc.studentcourseselection.util;
+package com.ustc.studentcourseselection.dao;
 
 import java.sql.*;
 

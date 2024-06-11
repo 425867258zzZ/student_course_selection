@@ -3,11 +3,8 @@ package com.ustc.studentcourseselection.dao;
 import com.ustc.studentcourseselection.model.BaseObject;
 import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Teacher;
-import com.ustc.studentcourseselection.util.DBconnection;
-import com.ustc.studentcourseselection.view.UIUtil;
 
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +16,44 @@ import java.util.Vector;
  */
 
 public class TeacherDao {
-    public static JScrollPane scrollPane = new JScrollPane();
+    /**
+     * 修改密码
+     */
+    public static boolean updatePassword(int teacherId, String newPassword) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = DBconnection.getConnection();
+
+            String sql = "UPDATE teacher SET password = ? WHERE id = ?";
+            if (conn != null) {
+                stmt = conn.prepareStatement(sql);
+            }
+
+            if (stmt != null) {
+                stmt.setString(1, newPassword);
+                stmt.setInt(2, teacherId);
+            }
+
+            if (stmt != null) {
+                return stmt.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return false;
+    }
 
     /**
      * 添加老师
@@ -31,7 +65,7 @@ public class TeacherDao {
     public boolean add(BaseObject baseObject) {
         Teacher teacher = (Teacher) baseObject;
         Connection connection = DBconnection.getConnection();
-        String sql1 = "INSERT INTO teacher(id,name,number,gender,department,password,createTime,updateTime) VALUES(?,?,?,?,?,?,?,?)";
+        String sql1 = "INSERT INTO teacher(id,name,number,gender,department,password,create_Time,update_Time) VALUES(?,?,?,?,?,?,?,?)";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
@@ -101,7 +135,7 @@ public class TeacherDao {
 
     public boolean update(Teacher teacher) {
         Connection connection = DBconnection.getConnection();
-        String sql3 = "UPDATE teacher SET name=?, number=?, gender=?, department=?, updateTime=? WHERE id=?";
+        String sql3 = "UPDATE teacher SET name=?, number=?, gender=?, department=?, update_Time=? WHERE id=?";
         PreparedStatement ps = null;
         try {
             if (connection != null) {
@@ -151,8 +185,9 @@ public class TeacherDao {
             if (rs != null && rs.next()) {
                 return new Teacher(rs.getInt("Id"), rs.getString("Name"),
                         rs.getString("Number"), rs.getString("Gender"),
-                        rs.getString("Department"), rs.getString("Password"),
-                        rs.getString("CreateTime"), rs.getString("UpdateTime"));
+                        rs.getString("Department"),
+                        rs.getString("Password"), rs.getString("Create_Time"),
+                        rs.getString("Update_Time"));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -168,12 +203,20 @@ public class TeacherDao {
      * @return Array<teacher>
      */
 
-    @SuppressWarnings("rawtypes")
-    public Vector<Vector> queryAll() {
+    public Vector<Vector<String>> queryAll(String name, String number, String department) {
         Connection connection = DBconnection.getConnection();
-        String sql5 = "SELECT * FROM teacher";
+        String sql5 = "SELECT * FROM teacher WHERE 1=1";
+        if (name != null && !name.isEmpty()) {
+            sql5 += " AND name LIKE '%" + name + "%'";
+        }
+        if (number != null && !number.isEmpty()) {
+            sql5 += " AND number LIKE '%" + number + "%'";
+        }
+        if (department != null && !department.isEmpty()) {
+            sql5 += " AND major LIKE '%" + department + "%'";
+        }
+        PreparedStatement ps = null;
         try {
-            PreparedStatement ps = null;
             if (connection != null) {
                 ps = connection.prepareStatement(sql5);
             }
@@ -181,74 +224,24 @@ public class TeacherDao {
             if (ps != null) {
                 rs = ps.executeQuery();
             }
-            Vector<Vector> teachersData = new Vector<>();
+            Vector<Vector<String>> teachers = new Vector<>();
             if (rs != null) {
                 while (rs.next()) {
-                    Vector<String> teacherRow = new Vector<>();
-                    teacherRow.add(String.valueOf(rs.getInt("Id")));
-                    teacherRow.add(rs.getString("Name"));
-                    teacherRow.add(rs.getString("Number"));
-                    teacherRow.add(rs.getString("Gender"));
-                    teacherRow.add(rs.getString("Department"));
-                    teacherRow.add(rs.getString("Password"));
-                    teacherRow.add(rs.getString("CreateTime"));
-                    teacherRow.add(rs.getString("UpdateTime"));
-                    teachersData.add(teacherRow);
+                    Vector<String> teacher = new Vector<>();
+                    teacher.add(rs.getString("name"));
+                    teacher.add(rs.getString("number"));
+                    teacher.add(rs.getString("gender"));
+                    teacher.add(rs.getString("department"));
+                    teachers.add(teacher);
                 }
             }
-            DBconnection.closeConnection(rs, null, connection);
-            return teachersData;
+            return teachers;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        } finally {
+            DBconnection.closeConnection(null, ps, connection);
         }
         return null;
-    }
-
-    /**
-     * 修改密码
-     *
-     */
-    public static void updatePassword(int teacherId, String newPassword) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn =  DBconnection.getConnection();
-
-            String sql = "UPDATE teacher SET password = ? WHERE id = ?";
-            if (conn != null) {
-                stmt = conn.prepareStatement(sql);
-            }
-
-            if (stmt != null) {
-                stmt.setString(1, newPassword);
-                stmt.setInt(2, teacherId);
-            }
-
-            int rowsAffected = 0;
-            if (stmt != null) {
-                rowsAffected = stmt.executeUpdate();
-            }
-            if (rowsAffected > 0) {
-                Icon customIcon = new ImageIcon("src/main/resources/images/success.png");
-                UIUtil.showScaledIconMessage(scrollPane, "修改成功！", "提示", customIcon);
-            } else {
-                Icon customIcon = new ImageIcon("src/main/resources/images/error.png");
-                UIUtil.showScaledIconMessage(scrollPane, "修改失败！", "提示", customIcon);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
     }
 
 }

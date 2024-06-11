@@ -2,11 +2,11 @@ package com.ustc.studentcourseselection.dao;
 
 import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Course;
-import com.ustc.studentcourseselection.util.DBconnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 /**
@@ -54,16 +54,17 @@ public class CourseDao {
                 ps = connection.prepareStatement(sql1);
             }
             if (ps != null) {
-                ps.setString(1, course.getNumber());
-                ps.setString(2, course.getCourseName());
-                ps.setString(3, course.getCourseTime());
-                ps.setString(4, course.getMajor());
-                ps.setString(5, course.getLocation());
-                ps.setString(6, course.getTeacherName());
-                ps.setInt(7, course.getScore());
-                ps.setInt(8, course.getCapacity());
-                ps.setString(9, BaseUtils.getTime());
-                ps.setInt(10, course.getId());
+                ps.setInt(1, course.getId());
+                ps.setString(2, course.getNumber());
+                ps.setString(3, course.getCourseName());
+                ps.setString(4, course.getCourseTime());
+                ps.setString(5, course.getMajor());
+                ps.setString(6, course.getLocation());
+                ps.setString(7, course.getTeacherName());
+                ps.setInt(8, course.getScore());
+                ps.setInt(9, course.getCapacity());
+                ps.setString(10, BaseUtils.getTime());
+                ps.setString(11,BaseUtils.getTime());
             }
             if (ps != null) {
                 return ps.executeUpdate() > 0;
@@ -76,6 +77,45 @@ public class CourseDao {
         return false;
     }
 
+
+    /**
+     *获取课程id,在数据库中最后的id+1
+     */
+    public boolean courseIdGet(String number, String courseName, String courseTime, String major, String location, String teacherName, int score, int capacity, String createTime, String updateTime) {
+        int id = 0;
+        CourseDao cd = new CourseDao();
+
+        Connection connection = DBconnection.getConnection();
+        System.out.println("successful");
+        String sql = "SELECT id FROM course ORDER BY id DESC LIMIT 1;";
+        PreparedStatement pstm = null;
+        try {
+            if (connection != null) {
+                pstm = connection.prepareStatement(sql);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ResultSet rs = null;
+        try {
+            if (pstm != null) {
+                rs = pstm.executeQuery(sql);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            if (rs != null && rs.next()) {
+                // 获取结果
+                id = rs.getInt("id") + 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBconnection.closeConnection(rs, pstm, connection);
+        }
+        return cd.addCourse(new Course(id, number, courseName, courseTime, major, location, teacherName, score, capacity, createTime, updateTime));
+    }
     /**
      * 删除课程
      *
@@ -103,6 +143,8 @@ public class CourseDao {
         }
         return false;
     }
+
+
 
     /**
      * 更新课程
@@ -229,4 +271,5 @@ public class CourseDao {
         }
         return null;
     }
+
 }

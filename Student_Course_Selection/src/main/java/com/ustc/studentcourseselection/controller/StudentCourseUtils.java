@@ -70,10 +70,10 @@ public class StudentCourseUtils {
     }
 
     /**
-     * Quit course boolean.
+     * 退课
      *
-     * @param studentId    the student id
-     * @param courseNumber the course number
+     * @param studentId    学生id
+     * @param courseNumber 课程号
      * @return the boolean
      */
     public static boolean quitCourse(int studentId, String courseNumber) {
@@ -84,9 +84,9 @@ public class StudentCourseUtils {
     }
 
     /**
-     * Refresh course for choose course.
+     * 刷新课程 选择课程界面。
      *
-     * @param courseData the course data
+     * @param courseData 课程数据
      */
     public static void refreshCourseForChooseCourse(Vector<Vector<String>> courseData) {
         CourseDao courseDao = new CourseDao();
@@ -98,10 +98,10 @@ public class StudentCourseUtils {
     }
 
     /**
-     * Refresh course for course chosen.
+     * 刷新课程 已选课程界面。
      *
-     * @param courseData the course data
-     * @param student    the student
+     * @param courseData 课程数据
+     * @param student    学生
      */
     public static void refreshCourseForCourseChosen(Vector<Vector<String>> courseData, Student student) {
         courseData.clear();
@@ -121,5 +121,5 @@ public class StudentCourseUtils {
             courseData.add(rowData);
         }
     }
-    
+
 }
