@@ -40,14 +40,14 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         ));
 
         setTableData(table, scrollPane, header, courseData);
-        table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QuaryButton());
-        table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QuaryButtonEditor(table, teacher));
+        table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QueryButton());
+        table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QueryButtonEditor(table));
 
         refreshBt.addActionListener(e -> {
             refreshButtonClick(teacher);
             setTableData(table, scrollPane, header, courseData);
-            table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QuaryButton());
-            table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QuaryButtonEditor(table, teacher));
+            table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QueryButton());
+            table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QueryButtonEditor(table));
         });
 
         JLabel courseNum = new JLabel("课程号:");
@@ -93,8 +93,8 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         searchBt.addActionListener(e -> {
             courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), courseMajor.getText(), courseTeacherName.getText());
             setTableData(table, scrollPane, header, courseData);
-            table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QuaryButton());
-            table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QuaryButtonEditor(table, teacher));
+            table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QueryButton());
+            table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QueryButtonEditor(table));
         });
 
     }
@@ -104,10 +104,10 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         TeacherCourseUtils.refreshCourseForCourseInfo(courseData);
     }
 
-    static class QuaryButton implements TableCellRenderer {
+    static class QueryButton implements TableCellRenderer {
         private final JButton btn;
 
-        public QuaryButton() {
+        public QueryButton() {
             btn = new JButton("查看");
             btn.setPreferredSize(new Dimension(30, 20));
             btn.setBackground(new Color(119, 201, 126));
@@ -124,10 +124,10 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         }
     }
 
-    static class QuaryButtonEditor extends DefaultCellEditor {
+    static class QueryButtonEditor extends DefaultCellEditor {
         private final JButton btn;
 
-        public QuaryButtonEditor(JTable table,Teacher teacher) {
+        public QueryButtonEditor(JTable table) {
             super(new JTextField());
             this.setClickCountToStart(1);
             btn = new JButton("查看");
@@ -145,7 +145,7 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
                     if (value != null) {
                         courseNumber = value.toString();
                     }
-                    TeacherCourseUtils.quaryStudentInfo(courseNumber);
+                    TeacherCourseUtils.queryStudentInfo(courseNumber);
                 }
             });
 

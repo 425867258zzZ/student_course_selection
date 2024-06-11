@@ -15,7 +15,7 @@ public class Teacher extends BaseObject {
         this.name = name;
         this.number = number;
         this.gender = gender;
-        this.department = department;;
+        this.department = department;
         this.password = password;
     }
 

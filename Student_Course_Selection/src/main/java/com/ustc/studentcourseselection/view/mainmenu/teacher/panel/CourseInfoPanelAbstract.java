@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.util.Vector;
-import static com.ustc.studentcourseselection.controller.TeacherCourseUtils.setupCourseGUI;
+import static com.ustc.studentcourseselection.controller.TeacherCourseUtils.setupCourseGui;
 
 /**
  * 课程信息抽象类
@@ -29,14 +29,14 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
         add(scrollPane);
 
         CourseDao courseDao = new CourseDao();
-        courseData = TeacherCourseDao.getCoursesForTeacher(teacher.getName());;
+        courseData = TeacherCourseDao.getCoursesForTeacher(teacher.getName());
 
         setTableData(table, scrollPane, header, courseData);
         table.getColumnModel().getColumn(9).setCellRenderer(new ModifyButton());
         table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
         table.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JTextField()));
         table.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(new JTextField()));
-        table.getColumnModel().getColumn(9).setCellEditor(new ModifyButtonEditor(table, teacher));
+        table.getColumnModel().getColumn(9).setCellEditor(new ModifyButtonEditor(table));
 
         refreshBt.addActionListener(e -> {
             refreshButtonClick(teacher);
@@ -45,7 +45,7 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
             table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
             table.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JTextField()));
             table.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(new JTextField()));
-            table.getColumnModel().getColumn(9).setCellEditor(new ModifyButtonEditor(table, teacher));
+            table.getColumnModel().getColumn(9).setCellEditor(new ModifyButtonEditor(table));
         });
 
         JLabel courseNum = new JLabel("课程号:");
@@ -112,12 +112,10 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
             table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
             table.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JTextField()));
             table.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(new JTextField()));
-            table.getColumnModel().getColumn(9).setCellEditor(new ModifyButtonEditor(table, teacher));
+            table.getColumnModel().getColumn(9).setCellEditor(new ModifyButtonEditor(table));
         });
 
-        setupCourse.addActionListener(e -> {
-            setupCourseGUI();
-        });
+        setupCourse.addActionListener(e -> setupCourseGui());
     }
 
     @Override
@@ -148,7 +146,7 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
     static class ModifyButtonEditor extends DefaultCellEditor {
         private final JButton btn;
 
-        public ModifyButtonEditor(JTable table, Teacher teacher) {
+        public ModifyButtonEditor(JTable table) {
             super(new JTextField());
             this.setClickCountToStart(1);
             btn = new JButton("保存");
@@ -157,9 +155,7 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
             btn.setBorder(null);
             btn.setFocusPainted(false);
-            btn.addActionListener(e -> {
-            TeacherCourseUtils.saveDataToDatabase(table);
-            });
+            btn.addActionListener(e -> TeacherCourseUtils.saveDataToDatabase(table));
 
         }
 
