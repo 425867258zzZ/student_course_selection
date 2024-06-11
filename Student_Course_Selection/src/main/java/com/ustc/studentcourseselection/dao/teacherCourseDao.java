@@ -1,12 +1,9 @@
 package com.ustc.studentcourseselection.dao;
 
-import com.ustc.studentcourseselection.model.Student;
 import com.ustc.studentcourseselection.util.DBconnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
 import java.util.Vector;
 
 import static com.ustc.studentcourseselection.dao.CourseDao.selectCount;

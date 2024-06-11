@@ -168,6 +168,7 @@ public class TeacherDao {
      * @return Array<teacher>
      */
 
+    @SuppressWarnings("rawtypes")
     public Vector<Vector> queryAll() {
         Connection connection = DBconnection.getConnection();
         String sql5 = "SELECT * FROM teacher";
@@ -181,17 +182,19 @@ public class TeacherDao {
                 rs = ps.executeQuery();
             }
             Vector<Vector> teachersData = new Vector<>();
-            while (rs.next()) {
-                Vector<String> teacherRow = new Vector<>();
-                teacherRow.add(String.valueOf(rs.getInt("Id")));
-                teacherRow.add(rs.getString("Name"));
-                teacherRow.add(rs.getString("Number"));
-                teacherRow.add(rs.getString("Gender"));
-                teacherRow.add(rs.getString("Department"));
-                teacherRow.add(rs.getString("Password"));
-                teacherRow.add(rs.getString("CreateTime"));
-                teacherRow.add(rs.getString("UpdateTime"));
-                teachersData.add(teacherRow);
+            if (rs != null) {
+                while (rs.next()) {
+                    Vector<String> teacherRow = new Vector<>();
+                    teacherRow.add(String.valueOf(rs.getInt("Id")));
+                    teacherRow.add(rs.getString("Name"));
+                    teacherRow.add(rs.getString("Number"));
+                    teacherRow.add(rs.getString("Gender"));
+                    teacherRow.add(rs.getString("Department"));
+                    teacherRow.add(rs.getString("Password"));
+                    teacherRow.add(rs.getString("CreateTime"));
+                    teacherRow.add(rs.getString("UpdateTime"));
+                    teachersData.add(teacherRow);
+                }
             }
             DBconnection.closeConnection(rs, null, connection);
             return teachersData;
@@ -233,7 +236,7 @@ public class TeacherDao {
                 UIUtil.showScaledIconMessage(scrollPane, "–ﬁ∏ƒ ß∞‹£°", "Ã· æ", customIcon);
             }
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         } finally {
             try {
                 if (stmt != null) {
@@ -243,7 +246,7 @@ public class TeacherDao {
                     conn.close();
                 }
             } catch (SQLException e) {
-                e.getMessage();
+                System.out.println(e.getMessage());
             }
         }
     }

@@ -1,24 +1,12 @@
 package com.ustc.studentcourseselection.view.mainmenu.teacher.panel;
 
 import com.ustc.studentcourseselection.controller.TeacherCourseUtils;
-import com.ustc.studentcourseselection.dao.TeacherCourseDao;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.UIUtil;
 import org.jetbrains.annotations.NotNull;
-import com.ustc.studentcourseselection.model.Course;
-import com.ustc.studentcourseselection.model.Teacher;
-import com.ustc.studentcourseselection.util.DBconnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.Vector;
+
 
 /**
  * @author ÅËÒåÁ¼
@@ -102,9 +90,7 @@ public class PersonalInfoPanel extends JPanel {
         searchButton.setFocusPainted(false);
         add(searchButton);
 
-        searchButton.addActionListener(e -> {
-                TeacherCourseUtils.changePassword(teacher);
-            });
+        searchButton.addActionListener(e -> TeacherCourseUtils.changePassword(teacher));
     }
 
     @NotNull

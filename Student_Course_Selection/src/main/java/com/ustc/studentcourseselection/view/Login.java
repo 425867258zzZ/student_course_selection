@@ -6,6 +6,7 @@ import com.ustc.studentcourseselection.model.Student;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.mainmenu.student.StudentMenu;
 import com.ustc.studentcourseselection.view.mainmenu.teacher.TeacherMenu;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -78,33 +79,7 @@ public class Login extends JFrame {
         userPasswordLb.setBounds(50, 257, 95, 28);
         contentPane.add(userPasswordLb);
 
-        JButton loginBt = new JButton("登录");
-        loginBt.setFont(new Font("微软雅黑", Font.PLAIN, 17));
-        loginBt.setBounds(285, 318, 95, 34);
-        loginBt.setBorder(null);
-        loginBt.setFocusPainted(false);
-        loginBt.addActionListener(e -> {
-
-            String numberInput = numberField.getText();
-            String password = new String(passwordField.getPassword());
-            BaseObject object = LoginUtils.loginConfirm(numberInput, password);
-            if (object instanceof Student) {
-                Student student = (Student) object;
-                StudentMenu mainWindow = new StudentMenu(student);
-                mainWindow.setVisible(true);
-                // 关闭登录界面
-                dispose();
-            } else if (object instanceof Teacher) {
-                Teacher teacher = (Teacher) object;
-                TeacherMenu mainWindow = new TeacherMenu(teacher);
-                mainWindow.setVisible(true);
-                // 关闭登录界面
-                dispose();
-            } else {
-                // 如果验证失败，显示错误消息
-                JOptionPane.showMessageDialog(Login.this, "用户名或密码错误", "登录失败", JOptionPane.ERROR_MESSAGE);
-            }
-        });
+        JButton loginBt = getjButton(numberField, passwordField);
         contentPane.add(loginBt);
 
         JLabel findPasswordBt = new JLabel("找回密码");
@@ -121,6 +96,36 @@ public class Login extends JFrame {
         updatePasswordBt.setCursor(new Cursor(Cursor.HAND_CURSOR));
         updatePasswordBt.setBounds(211, 320, 33, 34);
         contentPane.add(updatePasswordBt);
+    }
+
+    @NotNull
+    private JButton getjButton(JTextField numberField, JPasswordField passwordField) {
+        JButton loginBt = new JButton("登录");
+        loginBt.setFont(new Font("微软雅黑", Font.PLAIN, 17));
+        loginBt.setBounds(285, 318, 95, 34);
+        loginBt.setBorder(null);
+        loginBt.setFocusPainted(false);
+        loginBt.addActionListener(e -> {
+
+            String numberInput = numberField.getText();
+            String password = new String(passwordField.getPassword());
+            BaseObject object = LoginUtils.loginConfirm(numberInput, password);
+            if (object instanceof Student student) {
+                StudentMenu mainWindow = new StudentMenu(student);
+                mainWindow.setVisible(true);
+                // 关闭登录界面
+                dispose();
+            } else if (object instanceof Teacher teacher) {
+                TeacherMenu mainWindow = new TeacherMenu(teacher);
+                mainWindow.setVisible(true);
+                // 关闭登录界面
+                dispose();
+            } else {
+                // 如果验证失败，显示错误消息
+                JOptionPane.showMessageDialog(Login.this, "用户名或密码错误", "登录失败", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        return loginBt;
     }
 
     public static void main(String[] args) {
