@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import static com.ustc.studentcourseselection.dao.CourseDao.selectCount;
 
 /**
  * 教师与课程和交互逻辑
@@ -60,63 +59,15 @@ public class TeacherCourseDao {
         }
         return null;
     }
-    
-    
+
+
     /**
-     * 通过老师名字获取老师教的所有课程
+     * 通过学号，名字查询学生
      *
-     * @param teacherName 老师名字
-     * @return 该老师教的所有课程
+     * @param stuNumber 学号
+     * @param stuName 学生姓名
+     * @return 符合条件的学生
      */
-    public static Vector<Vector<String>> getCoursesInfoForTeacher(String teacherName) {
-        Connection connection = DBconnection.getConnection();
-        String sql2 = "SELECT * FROM course WHERE 1=1";
-
-        if (teacherName != null && !teacherName.isEmpty()) {
-            sql2 += " AND teacher_name LIKE '%" + teacherName + "%'";
-        }
-
-        PreparedStatement ps = null;
-        try {
-            if (connection != null) {
-                ps = connection.prepareStatement(sql2);
-            }
-
-            ResultSet rs = null;
-            if (ps != null) {
-                rs = ps.executeQuery();
-            }
-
-            Vector<Vector<String>> courses = new Vector<>();
-            if (rs != null) {
-                while (rs.next()) {
-                    Vector<String> course = new Vector<>();
-                    // 添加查询结果到course向量
-                    String selectCount = Integer.toString(selectCount(rs.getInt("id")));
-                    course.add(rs.getString("number"));
-                    course.add(rs.getString("course_name"));
-                    course.add(rs.getString("course_time"));
-                    course.add(rs.getString("major") + "学院");
-                    course.add(rs.getString("location"));
-                    course.add(rs.getString("teacher_name"));
-                    course.add(rs.getString("score"));
-                    course.add(selectCount);
-                    course.add(rs.getString("capacity"));
-                    courses.add(course);
-                }
-            }
-
-            return courses;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            DBconnection.closeConnection(null, ps, connection);
-        }
-
-        return null;
-    }
-
-
     public static Vector<Vector<String>> searchStuByNumber(String stuNumber, String stuName) {
         Connection connection = DBconnection.getConnection();
         String sql = "SELECT * FROM student WHERE 1=1";
@@ -156,9 +107,9 @@ public class TeacherCourseDao {
 
 
     /**
-     * Save data to database.
+     * 保存课程编辑后数据
      *
-     * @param table the table
+     * @param table 课程信息表
      */
     public static boolean saveDataToDatabase(JTable table) {
         int rowCount = table.getRowCount();
@@ -215,6 +166,12 @@ public class TeacherCourseDao {
         return false;
     }
 
+
+    /**
+     * 老师添加课程
+     *
+     * @param table 申请开课表
+     */
     public static boolean addCourseToDatabase(DefaultTableModel table){
         Vector<Vector> data = table.getDataVector();
         Connection connection = null;
@@ -256,6 +213,11 @@ public class TeacherCourseDao {
         }
     }
 
+    /**
+     * 获取课程id
+     *
+     * @param number 课程号
+     */
     public static int getCourseId(String number){
         Connection connection = null;
         PreparedStatement ps = null;
@@ -282,6 +244,12 @@ public class TeacherCourseDao {
         return courseId;
     }
 
+    /**
+     * 获取课程号以及课程名
+     *
+     * @param teacherName 老师名
+     * @return 返回课程号及课程名
+     */
     public static String getCourseNumAndName(String teacherName) {
 
         Connection connection = DBconnection.getConnection();

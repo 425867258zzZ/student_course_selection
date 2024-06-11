@@ -24,7 +24,7 @@ public abstract class AbstractTeacherPanel extends Panel {
             "*上课地点", "老师", "学分", "已选人数",
             "*课程容量", "操作"
     ));
-    protected JButton refreshBt = new JButton("更新课程");
+    protected JButton refreshBt = new JButton("刷新");
 
     public AbstractTeacherPanel() {
         refreshBt.setFont(new Font("微软雅黑", Font.PLAIN, 14));

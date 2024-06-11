@@ -2,7 +2,6 @@ package com.ustc.studentcourseselection.view.mainmenu.teacher.panel;
 
 import com.ustc.studentcourseselection.controller.TeacherCourseUtils;
 import com.ustc.studentcourseselection.dao.CourseDao;
-import com.ustc.studentcourseselection.dao.TeacherCourseDao;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.UIUtil;
 import com.ustc.studentcourseselection.view.mainmenu.teacher.AbstractTeacherPanel;
@@ -31,7 +30,7 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         add(scrollPane);
 
         CourseDao courseDao = new CourseDao();
-        courseData = TeacherCourseDao.getCoursesInfoForTeacher(teacher.getName());
+        courseData = courseDao.queryAll(null,null,null,teacher.getName());
 
         header = new Vector<>(Arrays.asList(
                 "课程号", "课程名", "开课时间", "开课院系",

@@ -33,11 +33,11 @@ public class TeacherCourseUtils {
     }
 
     /**
-     * Add course to database.
+     * 申请开课逻辑
      *
-     * @param table the table
-     * @param teacherName the teacherName
-     * @return 有空值返回1，数据库异常返回2，成功返回3，时间异常
+     * @param table 申请开课表
+     * @param teacherName 老师名
+     * @return 有空值返回1，数据库异常返回2，成功返回3，时间异常返回4，老师错误返回5
      */
 
     @SuppressWarnings("rawtypes")
