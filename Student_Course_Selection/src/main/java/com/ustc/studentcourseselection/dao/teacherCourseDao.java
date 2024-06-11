@@ -3,7 +3,6 @@ package com.ustc.studentcourseselection.dao;
 import com.ustc.studentcourseselection.model.BaseUtils;
 import com.ustc.studentcourseselection.model.Course;
 import com.ustc.studentcourseselection.util.DBconnection;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
