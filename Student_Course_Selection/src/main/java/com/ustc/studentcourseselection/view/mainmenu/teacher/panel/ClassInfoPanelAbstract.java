@@ -31,7 +31,7 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         add(scrollPane);
 
         CourseDao courseDao = new CourseDao();
-        courseData = TeacherCourseDao.getCoursesForTeacher(teacher.getName());
+        courseData = TeacherCourseDao.getCoursesInfoForTeacher(teacher.getName());
 
         header = new Vector<>(Arrays.asList(
                 "课程号", "课程名", "开课时间", "开课院系",
@@ -87,11 +87,8 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         searchBt.setBounds(450, 10, 80, 34);
         add(searchBt);
 
-        JTextField courseMajor = new JTextField();
-        JTextField courseTeacherName = new JTextField();
-
         searchBt.addActionListener(e -> {
-            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), courseMajor.getText(), courseTeacherName.getText());
+            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), null, null);
             setTableData(table, scrollPane, header, courseData);
             table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QueryButton());
             table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QueryButtonEditor(table));
@@ -145,7 +142,7 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
                     if (value != null) {
                         courseNumber = value.toString();
                     }
-                    TeacherCourseUtils.queryStudentInfo(courseNumber);
+                    PopUpPanel.queryStudentPanel(courseNumber);
                 }
             });
 
