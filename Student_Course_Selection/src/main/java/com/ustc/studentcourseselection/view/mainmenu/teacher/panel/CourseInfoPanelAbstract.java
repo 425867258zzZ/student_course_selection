@@ -10,7 +10,8 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.util.Vector;
-import static com.ustc.studentcourseselection.controller.TeacherCourseUtils.setupCourseGui;
+import static com.ustc.studentcourseselection.view.mainmenu.teacher.panel.PopUpPanel.setupCoursePanel;
+
 
 /**
  * 课程信息抽象类
@@ -29,7 +30,7 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
         add(scrollPane);
 
         CourseDao courseDao = new CourseDao();
-        courseData = TeacherCourseDao.getCoursesForTeacher(teacher.getName());
+        courseData = TeacherCourseDao.getCoursesInfoForTeacher(teacher.getName());
 
         setTableData(table, scrollPane, header, courseData);
         table.getColumnModel().getColumn(9).setCellRenderer(new ModifyButton());
@@ -103,10 +104,8 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
         courseMajor.setBounds(833, 13, 95, 25);
         add(courseMajor);
 
-        JTextField courseTeacherName = new JTextField();
-
         searchBt.addActionListener(e -> {
-            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), courseMajor.getText(), courseTeacherName.getText());
+            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), null,null);
             setTableData(table, scrollPane, header, courseData);
             table.getColumnModel().getColumn(9).setCellRenderer(new ModifyButton());
             table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
@@ -115,7 +114,8 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
             table.getColumnModel().getColumn(9).setCellEditor(new ModifyButtonEditor(table));
         });
 
-        setupCourse.addActionListener(e -> setupCourseGui());
+        setupCourse.addActionListener(e -> setupCoursePanel(teacher.getName()));
+
     }
 
     @Override
@@ -155,7 +155,16 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
             btn.setBorder(null);
             btn.setFocusPainted(false);
-            btn.addActionListener(e -> TeacherCourseUtils.saveDataToDatabase(table));
+            btn.addActionListener(e -> {
+                if (TeacherCourseDao.saveDataToDatabase(table)) {
+                    Icon customIcon = new ImageIcon("src/main/resources/images/success.png");
+                    UIUtil.showScaledIconMessage(scrollPane, "保存成功！", "提示", customIcon);
+                }
+                else{
+                    Icon customIcon = new ImageIcon("src/main/resources/images/error.png");
+                    UIUtil.showScaledIconMessage(scrollPane, "保存失败！", "提示", customIcon);
+                }
+            });
 
         }
 

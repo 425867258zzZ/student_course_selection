@@ -1,6 +1,7 @@
 package com.ustc.studentcourseselection.view.mainmenu.teacher.panel;
 
-import com.ustc.studentcourseselection.controller.TeacherCourseUtils;
+import com.ustc.studentcourseselection.dao.TeacherCourseDao;
+import com.ustc.studentcourseselection.dao.TeacherDao;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.UIUtil;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,12 @@ import java.awt.*;
  * @author ≈À“Â¡º
  */
 public class PersonalInfoPanel extends JPanel {
+
+    /**
+     * The constant scrollPane.
+     */
+    public static JScrollPane scrollPane = new JScrollPane();
+
     public PersonalInfoPanel(Teacher teacher) {
         setBounds(200, 0, 994, 667);
         setLayout(null);
@@ -79,7 +86,7 @@ public class PersonalInfoPanel extends JPanel {
         rTitle1.setBounds(12, 300, 200, 30);
         majorPanel.add(rTitle1);
 
-        JLabel message = TeacherCourseUtils.getMessage(teacher.getName());
+        JLabel message = getMessage(teacher.getName());
         majorPanel.add(message);
 
         JButton searchButton = new JButton("∏¸∏ƒ√‹¬Î");
@@ -90,7 +97,7 @@ public class PersonalInfoPanel extends JPanel {
         searchButton.setFocusPainted(false);
         add(searchButton);
 
-        searchButton.addActionListener(e -> TeacherCourseUtils.changePassword(teacher));
+        searchButton.addActionListener(e -> changePassword(teacher));
     }
 
     @NotNull
@@ -102,6 +109,77 @@ public class PersonalInfoPanel extends JPanel {
         return info;
     }
 
+    /**
+     * Change password.
+     *
+     * @param teacher the teacher
+     */
+    public static void changePassword (Teacher teacher){
+
+        JFrame frame = new JFrame("–ﬁ∏ƒ√‹¬Î");
+        JLabel oldPasswordLabel = new JLabel(" ‰»Î‘≠√‹¬Î:");
+        oldPasswordLabel.setFont(new Font("Œ¢»Ì—≈∫⁄", Font.PLAIN, 20));
+        JPasswordField oldPasswordField = new JPasswordField(20);
+
+        JLabel newPasswordLabel = new JLabel(" ‰»Î–¬√‹¬Î:");
+        newPasswordLabel.setFont(new Font("Œ¢»Ì—≈∫⁄", Font.PLAIN, 20));
+        JPasswordField newPasswordField = new JPasswordField(20);
+
+        //’ºŒª±Í«©
+        JLabel occupancy = new JLabel();
+
+        JButton changeButton = new JButton("–ﬁ∏ƒ");
+        changeButton.setForeground(Color.BLACK);
+        changeButton.setBackground(new Color(225, 255, 255));
+        changeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        changeButton.setFocusPainted(false);
+        JFrame tempFrame = new JFrame();
+        tempFrame.pack();
+
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+        panel.add(oldPasswordLabel);
+        panel.add(oldPasswordField);
+        panel.add(newPasswordLabel);
+        panel.add(newPasswordField);
+        panel.add(occupancy);
+        panel.add(changeButton);
+
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(panel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        changeButton.addActionListener(e -> {
+            String oldPassword = new String(oldPasswordField.getPassword());
+            String newPassword = new String(newPasswordField.getPassword());
+
+            if (teacher.getPassword().equals(oldPassword)) {
+                TeacherDao.updatePassword(teacher.getId(), newPassword);
+                teacher.setPassword(newPassword);
+                frame.dispose();
+            } else {
+                Icon customIcon = new ImageIcon("src/main/resources/images/error.png");
+                UIUtil.showScaledIconMessage(scrollPane, "‘≠√‹¬Î¥ÌŒÛ£°", "Ã· æ", customIcon);
+            }
+        });
+    }
+
+    /**
+     * Gets message.
+     *
+     * @param teacherName the teacher name
+     * @return the message
+     */
+
+    public static JLabel getMessage(String teacherName) {
+
+        String text = TeacherCourseDao.getCourseNumAndName(teacherName);
+        JLabel info = new JLabel(text);
+        info.setFont(new Font("Œ¢»Ì—≈∫⁄", Font.PLAIN, 12));
+        info.setBounds(20, 200, 450, 305);
+        return info;
+    }
 
 }
 
