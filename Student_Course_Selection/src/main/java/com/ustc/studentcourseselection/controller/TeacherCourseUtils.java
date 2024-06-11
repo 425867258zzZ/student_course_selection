@@ -36,6 +36,8 @@ public class TeacherCourseUtils {
      * Add course to database.
      *
      * @param table the table
+     * @param teacherName the teacherName
+     * @return 有空值返回1，数据库异常返回2，成功返回3，时间异常
      */
 
     @SuppressWarnings("rawtypes")
