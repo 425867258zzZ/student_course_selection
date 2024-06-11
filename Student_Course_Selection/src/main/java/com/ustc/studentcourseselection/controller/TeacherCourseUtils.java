@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class TeacherCourseUtils {
 
     /**
-     * 刷新课程以获取课程信息.
+     * Refresh course for course info.
      *
      * @param courseData the course data
      */
@@ -33,12 +33,15 @@ public class TeacherCourseUtils {
     }
 
     /**
-     * 将课程添加到数据库。
+     * 申请开课逻辑
      *
-     * @param table the table
+     * @param table 申请开课表
+     * @param teacherName 老师名
+     * @return 有空值返回1，数据库异常返回2，成功返回3，时间异常返回4，老师错误返回5
      */
+
     @SuppressWarnings("rawtypes")
-    public static int addCourse(DefaultTableModel table, String teacherName) {
+    public static int addCourse(DefaultTableModel table,String teacherName) {
         Vector<Vector> data = table.getDataVector();
         //不能为空
         for (Vector row : data) {
@@ -97,7 +100,7 @@ public class TeacherCourseUtils {
         }
         if (name != null) {
             boolean mark = name.equals(teacherName);
-            if (!mark) {
+            if(!mark){
                 return 5;
             }
         }
@@ -105,11 +108,11 @@ public class TeacherCourseUtils {
 
         //无以上错误，运行开课逻辑
         if (TeacherCourseDao.addCourseToDatabase(table)) {
-            return 3;
-        } else {
-            //数据库异常
-            return 2;
-        }
+                return 3;
+            }else{
+                //数据库异常
+                return 2;
+            }
     }
 
 }

@@ -24,7 +24,7 @@ import static com.ustc.studentcourseselection.controller.TeacherCourseUtils.addC
 public class PopUpPanel {
 
     /**
-     * Sets course gui.
+     * 申请开课界面
      */
 
     public static void setupCoursePanel(String teacherName) {
@@ -104,9 +104,9 @@ public class PopUpPanel {
     }
 
     /**
-     * Query student info.
+     * 查询班级学生信息界面
      *
-     * @param number the number
+     * @param number 学号
      */
     public static void queryStudentPanel(String number){
 
@@ -118,7 +118,14 @@ public class PopUpPanel {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 600);
 
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // 返回 false 表示所有单元格都不可编辑
+                return false;
+            }
+        };
+
         model.addColumn("名字");model.addColumn("学号");model.addColumn("性别");model.addColumn("年级");model.addColumn("学历");model.addColumn("专业");model.addColumn("班级");
 
         if (students != null) {

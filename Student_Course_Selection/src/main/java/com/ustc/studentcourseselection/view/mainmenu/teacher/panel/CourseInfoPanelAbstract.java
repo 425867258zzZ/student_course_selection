@@ -30,7 +30,7 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
         add(scrollPane);
 
         CourseDao courseDao = new CourseDao();
-        courseData = TeacherCourseDao.getCoursesInfoForTeacher(teacher.getName());
+        courseData = courseDao.queryAll(null,null,null,teacher.getName());
 
         setTableData(table, scrollPane, header, courseData);
         table.getColumnModel().getColumn(9).setCellRenderer(new ModifyButton());
@@ -105,7 +105,7 @@ public class CourseInfoPanelAbstract extends AbstractTeacherPanel {
         add(courseMajor);
 
         searchBt.addActionListener(e -> {
-            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), null,null);
+            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), null, teacher.getName());
             setTableData(table, scrollPane, header, courseData);
             table.getColumnModel().getColumn(9).setCellRenderer(new ModifyButton());
             table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));

@@ -2,7 +2,6 @@ package com.ustc.studentcourseselection.view.mainmenu.teacher.panel;
 
 import com.ustc.studentcourseselection.controller.TeacherCourseUtils;
 import com.ustc.studentcourseselection.dao.CourseDao;
-import com.ustc.studentcourseselection.dao.TeacherCourseDao;
 import com.ustc.studentcourseselection.model.Teacher;
 import com.ustc.studentcourseselection.view.UIUtil;
 import com.ustc.studentcourseselection.view.mainmenu.teacher.AbstractTeacherPanel;
@@ -24,6 +23,11 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
 
     public static JTable table = UIUtil.creatTable();
 
+    public static Vector<String> headerCl = new Vector<>(Arrays.asList(
+            "课程号", "课程名", "开课时间", "开课院系",
+            "上课地点", "老师", "学分", "已选人数",
+            "课程容量", "操作"
+    ));
 
     public ClassInfoPanelAbstract(Teacher teacher) {
         scrollPane.setBounds(20, 50, 944, 550);
@@ -31,21 +35,15 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         add(scrollPane);
 
         CourseDao courseDao = new CourseDao();
-        courseData = TeacherCourseDao.getCoursesInfoForTeacher(teacher.getName());
+        courseData = courseDao.queryAll(null,null,null,teacher.getName());
 
-        header = new Vector<>(Arrays.asList(
-                "课程号", "课程名", "开课时间", "开课院系",
-                "上课地点", "老师", "学分", "已选人数",
-                "课程容量", "操作"
-        ));
-
-        setTableData(table, scrollPane, header, courseData);
+        setTableData(table, scrollPane, headerCl, courseData);
         table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QueryButton());
         table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QueryButtonEditor(table));
 
         refreshBt.addActionListener(e -> {
             refreshButtonClick(teacher);
-            setTableData(table, scrollPane, header, courseData);
+            setTableData(table, scrollPane, headerCl, courseData);
             table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QueryButton());
             table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QueryButtonEditor(table));
         });
@@ -88,8 +86,8 @@ public class ClassInfoPanelAbstract extends AbstractTeacherPanel {
         add(searchBt);
 
         searchBt.addActionListener(e -> {
-            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), null, null);
-            setTableData(table, scrollPane, header, courseData);
+            courseData = courseDao.queryAll(courseNumber.getText(), courseName.getText(), null, teacher.getName());
+            setTableData(table, scrollPane, headerCl, courseData);
             table.getColumnModel().getColumn(9).setCellRenderer(new ClassInfoPanelAbstract.QueryButton());
             table.getColumnModel().getColumn(9).setCellEditor(new ClassInfoPanelAbstract.QueryButtonEditor(table));
         });
